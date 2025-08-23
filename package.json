@@ -1,22 +1,14 @@
 {
-  "name": "op-selling-dashboard",
+  "name": "op-selling-frontend-dashboard",
   "private": true,
   "type": "module",
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
-    "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
-    "format": "prettier --write .",
-    "generate": "graphql-codegen"
+    "format": "prettier --write ."
   },
   "dependencies": {
-    "@apollo/client": "^3.13.8",
-    "@apollo/client-integration-react-router": "^0.12.0-alpha.4",
-    "@atlaskit/pragmatic-drag-and-drop": "^1.7.4",
-    "@atlaskit/pragmatic-drag-and-drop-hitbox": "^1.1.0",
-    "@clerk/react-router": "^1.6.2",
-    "@clerk/themes": "^2.2.52",
     "@hookform/resolvers": "^5.1.1",
     "@react-router/fs-routes": "^7.6.3",
     "@react-router/node": "^7.6.3",
@@ -30,7 +22,6 @@
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.19.2",
-    "graphql": "^16.11.0",
     "input-otp": "^1.4.2",
     "isbot": "^5.1.28",
     "lucide-react": "^0.525.0",
@@ -49,6 +40,7 @@
     "react-router": "^7.6.3",
     "recharts": "^2.15.3",
     "remark-gfm": "^4.0.1",
+    "remix-utils": "^8.8.0",
     "sonner": "^2.0.5",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",

@@ -1,4 +1,4 @@
-import { CheckCircle, Clock, FileText, Star } from 'lucide-react';
+import { BarChart, CheckCircle2, File } from 'lucide-react';
 import { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 
@@ -15,36 +15,25 @@ export function SubmissionsStats({
     if (!stats) return null;
     const statsFormat = [
       {
-        title: 'Tareas disponibles',
+        title: 'Métrica de rendimiento',
         value: stats.pendingTasks,
-        icon: Star,
+        icon: File,
         color: 'text-blue-600',
         bgColor: 'bg-blue-50',
-        change: '+2 ayer',
       },
       {
-        title: 'Pendientes de asignar',
+        title: 'Cifra promedio en el KPI-1 semestral',
         value: stats.completedTasks,
-        icon: Clock,
+        icon: CheckCircle2,
         color: 'text-red-600',
         bgColor: 'bg-red-50',
-        change: '+18% esta semana',
       },
       {
-        title: 'Asignadas y sin revisar',
+        title: 'Total de transacciones semestrales',
         value: 0,
-        icon: FileText,
+        icon: BarChart,
         color: 'text-orange-600',
         bgColor: 'bg-orange-50',
-        change: '+0.3 este mes',
-      },
-      {
-        title: 'Ya revisadas',
-        value: stats.totalTasks,
-        icon: CheckCircle,
-        color: 'text-green-600',
-        bgColor: 'bg-green-50',
-        change: 'Todo el tiempo',
       },
     ];
     return statsFormat;
@@ -67,9 +56,6 @@ export function SubmissionsStats({
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stat.value}</div>
-              <p className="text-muted-foreground mt-1 text-xs">
-                {stat.change}
-              </p>
             </CardContent>
           </Card>
         ))}

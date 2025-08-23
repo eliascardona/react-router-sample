@@ -4,10 +4,13 @@ import { StatusFilter } from '~/components/common/table/multi-select-filters';
 import { TableToolbar } from '~/components/common/table/table-toolbar';
 import type { SubmissionManagementAction } from '~/lib/management/types';
 import { useSubmissionManagementModal } from '~/lib/management/utils/management-data-context';
-import { generalDateRanges, type DateRange } from '~/lib/management/utils/table';
+import {
+  generalDateRanges,
+  type DateRange,
+} from '~/lib/management/utils/table';
 import { BulkActionsButtons } from '../bulk-actions/buttons';
 import { ColumnsVisibilityOptions } from './columns-visibility-options';
-import { SUBMISSIONS_TABLE_HEADERS } from './submissions-table-columns';
+import { TABLE_HEADERS } from './submissions-table-columns';
 
 // Status filter options with icons
 const STATUS_OPTIONS = [
@@ -70,11 +73,7 @@ export function SubmissionsTableToolbar({
   );
 }
 
-function SubmissionManagementTableActions({
-  table,
-}: {
-  table: Table<any>;
-}) {
+function SubmissionManagementTableActions({ table }: { table: Table<any> }) {
   const { openBulkModal } = useSubmissionManagementModal();
   const selectedRows = table.getSelectedRowModel().rows;
   const selectedTasks = selectedRows.map((row) => row.original);
@@ -102,10 +101,7 @@ function SubmissionManagementTableActions({
           </>
         )}
       </div>
-      <ColumnsVisibilityOptions
-        table={table}
-        columnLabels={SUBMISSIONS_TABLE_HEADERS}
-      />
+      <ColumnsVisibilityOptions table={table} columnLabels={TABLE_HEADERS} />
     </>
   );
 }

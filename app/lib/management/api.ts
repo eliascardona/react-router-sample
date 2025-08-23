@@ -2,18 +2,18 @@ import type { ApiClient, QueryParams } from '~/lib/api/client';
 import type { TableParams } from '~/lib/pagination/types';
 import {
   PaginatedSubmissionsSchema,
-  type AdminSubmissionBulkDeletionRequestBody,
-  type AdminSubmissionDeletion,
-  type AdminSubmissionFilter,
   type BulkWithdrawalRequestBody,
   type PaginatedSubmissions,
   type WithdrawRequestBody,
 } from './types';
 
-type GenericServerResponse = {
-  success: boolean,
-  message: string
-}
+export type GenericServerResponse =
+  | {
+      success: boolean;
+      message: string;
+    }
+  | null
+  | undefined;
 
 /**
  * Paginated submissions with advanced filtering. Ready to be watched by an admin.
@@ -35,7 +35,7 @@ export async function getAllSubmissionsWithAdvancedFiltering(
     };
 
     const response = await client.get<PaginatedSubmissions>(
-      `/submissions`,
+      `/machines/get`,
       {},
       queryParams
     );
@@ -99,62 +99,6 @@ export async function doBulkWithdrawalOfSubmissions(
     }
   } catch (error) {
     console.error('Error performing the bulk withdrawal:', error);
-    throw error;
-  }
-}
-
-/**
- * Delete a any. For staff and admin roles
- */
-export async function deleteSubmissionAsAdmin(
-  withdrawalRequestBody: AdminSubmissionDeletion,
-  client: ApiClient
-): Promise<GenericServerResponse> {
-  try {
-    const context = withdrawalRequestBody.body.context;
-    const payload = withdrawalRequestBody.body.payload;
-    const submissionId = payload.submissionId;
-
-    const response = await client.delete(`/submissions/${submissionId}`, {});
-    if (response != null) {
-      return {
-        success: true,
-        message: `La solicitud ${context.submissionIdentifier} ha sido eliminada`,
-      };
-    } else {
-      return { success: false, message: 'error desconocido' };
-    }
-  } catch (error) {
-    console.error('Error deleting any:', error);
-    throw error;
-  }
-}
-
-/**
- * Perform a bulk deletion over submissions (admin side)
- */
-export async function doAdminSubmissionsBulkDeletion(
-  bulkWithdrawalRequestBody: AdminSubmissionBulkDeletionRequestBody,
-  client: ApiClient
-): Promise<GenericServerResponse> {
-  try {
-    const payload = bulkWithdrawalRequestBody.body.payload;
-    const submissionIds = payload.submissionIds;
-
-    const response = await client.delete(
-      `/submissions/delete/bulk`,
-      submissionIds
-    );
-    if (response != null) {
-      return {
-        success: true,
-        message: `Eliminaste ${submissionIds.length} solicitudes exitosamente`,
-      };
-    } else {
-      return { success: false, message: 'error desconocido' };
-    }
-  } catch (error) {
-    console.error('Error performing the bulk deletion of submissions:', error);
     throw error;
   }
 }

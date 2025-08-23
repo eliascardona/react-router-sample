@@ -1,17 +1,14 @@
-import { getAuth } from '@clerk/react-router/ssr.server';
 import { Home, Shield } from 'lucide-react';
-import { Link, redirect } from 'react-router';
-import type { Route } from './+types/403';
+import { Link } from 'react-router';
 
-export async function loader(args: Route.LoaderArgs) {
-  const { userId } = await getAuth(args);
+// export async function loader(args: Route.LoaderArgs) {
+//   const store = getGlobalStorage();
+//   const accessToken = store.accessToken;
 
-  if (!userId) {
-    throw redirect('/registro');
-  }
-
-  return {};
-}
+//   if (!accessToken) {
+//     throw new Error("Acceso denegado");
+//   }
+// }
 
 export default function AccesoDenegado() {
   return (

@@ -1,6 +1,6 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from 'react-router';
 import { z } from 'zod';
-import type { createServerClient, createTokenClient } from './client';
+import type { createTokenClient } from './client';
 
 export const apiResponseSchema = <T extends z.ZodType>(dataSchema: T) =>
   z.object({
@@ -26,7 +26,4 @@ export type ErrorResponse = z.infer<typeof errorResponseSchema>;
 
 export type RouterFunctionArgs = LoaderFunctionArgs | ActionFunctionArgs;
 
-export type ApiClient =
-  | ReturnType<typeof createServerClient>
-  | ReturnType<typeof createTokenClient>
-  | undefined;
+export type ApiClient = ReturnType<typeof createTokenClient> | undefined;

@@ -1,16 +1,5 @@
-import { getAuth } from '@clerk/react-router/ssr.server';
 import { Home, Shield } from 'lucide-react';
-import { Link, redirect } from 'react-router';
-import type { Route } from './+types/404';
-
-export async function loader(args: Route.LoaderArgs) {
-  const { userId } = await getAuth(args);
-
-  if (!userId) {
-    throw redirect('/registro');
-  }
-  return {};
-}
+import { Link } from 'react-router';
 
 export default function NotFound() {
   return (

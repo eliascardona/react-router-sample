@@ -12,7 +12,10 @@ import {
 } from '~/components/ui/dropdown-menu';
 import type { SubmissionManagementAction } from '~/lib/management/types';
 import { useSubmissionManagementModal } from '~/lib/management/utils/management-data-context';
-import { disableDropdownMenuItem, type MenuItem } from '~/lib/management/utils/utils';
+import {
+  disableDropdownMenuItem,
+  type MenuItem,
+} from '~/lib/management/utils/utils';
 
 interface DataTableRowActionsHandlerProps<TData> {
   row: Row<TData>;
@@ -87,7 +90,7 @@ function DataTableRowActions<TData>({
           <DropdownMenuLabel>Otras acciones</DropdownMenuLabel>
 
           <DropdownMenuItem
-            onClick={() =>navigator.clipboard.writeText('No disponible')}>
+            onClick={() => navigator.clipboard.writeText('No disponible')}>
             <Copy className="size-4" />
             Copiar el folio de la solicitud
           </DropdownMenuItem>

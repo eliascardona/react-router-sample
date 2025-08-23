@@ -1,17 +1,14 @@
 import { useMemo } from 'react';
 import { useLoaderData } from 'react-router';
 import { GenericDataTable } from '~/components/common/table/generic-data-table';
-import { TableRowDialog } from '../common/table-row-dialog';
 import { useSubmissionManagementModal } from '~/lib/management/utils/management-data-context';
-import {
-  mapToSubmissionsTableData,
-  transformPaginatedSubmissionsToTableData
-} from '~/lib/management/utils/table';
+import { transformPaginatedSubmissionsToTableData } from '~/lib/management/utils/table';
 import type { loader } from '~/routes/management-table._index';
+import { TableRowDialog } from '../common/table-row-dialog';
 import { DialogContentHandler } from '../dialogs/dialog-content-handler';
 import {
-  SUBMISSIONS_TABLE_HEADERS,
   submissionsTableColumns,
+  TABLE_HEADERS,
 } from './submissions-table-columns';
 import { SubmissionsTableToolbar } from './submissions-table-toolbar';
 
@@ -33,11 +30,10 @@ export function DataTable() {
 
     const baseTableData =
       transformPaginatedSubmissionsToTableData<any>(dataPage);
-    const mappedContent = mapToSubmissionsTableData(baseTableData.content);
 
     return {
       ...baseTableData,
-      content: mappedContent,
+      content: baseTableData.content,
     };
   }, [dataPage]);
 
@@ -60,16 +56,16 @@ export function DataTable() {
         data={tableData}
         columns={submissionsTableColumns}
         filterComponent={SubmissionsTableToolbar}
-        title="Tareas de Revisión"
-        emptyMessage="No se encontraron tareas de revisión"
-        columnLabels={SUBMISSIONS_TABLE_HEADERS}
+        title="Administración básica de entidades"
+        emptyMessage="No se encontraron registros para esta entidad"
+        columnLabels={TABLE_HEADERS}
         initialColumnVisibility={{
           completedAt: false,
         }}
       />
 
       <TableRowDialog
-        dialogTitle="Administración de solicitudes"
+        dialogTitle="Administración de registros"
         isOpen={submissionManagementModalState.isOpen}
         onClose={closeAssignationModal}>
         <DialogContentHandler

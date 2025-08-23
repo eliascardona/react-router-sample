@@ -1,24 +1,18 @@
-import type { Route } from '.react-router/types/app/routes/+types/app.programas.$programId.solicitudes._index';
 import { authenticatedServerClient } from '~/lib/api/client.server';
-import type { ActionHandlerResponse } from '~/lib/api/types';
 import {
-  deleteSubmissionAsAdmin,
-  doAdminSubmissionsBulkDeletion,
   doBulkWithdrawalOfSubmissions,
   withdrawSubmissionAsAdmin,
+  type GenericServerResponse,
 } from './api';
 import type {
-  AdminSubmissionBulkDeletionRequestBody,
-  AdminSubmissionDeletion,
   BulkWithdrawalRequestBody,
   SubmissionManagementRequestBody,
   WithdrawRequestBody,
 } from './types';
 
 export async function submissionManagementActionHandler(
-  requestBody: SubmissionManagementRequestBody,
-  request: Route.ActionArgs
-): Promise<ActionHandlerResponse> {
+  requestBody: SubmissionManagementRequestBody
+): Promise<GenericServerResponse> {
   const intent = requestBody.intent;
   if (!requestBody) return null;
 
@@ -38,22 +32,6 @@ export async function submissionManagementActionHandler(
       case 'BULK_WITHDRAWAL': {
         const serviceResponse = await doBulkWithdrawalOfSubmissions(
           requestBody as BulkWithdrawalRequestBody,
-          authenticatedServerClient
-        );
-        return serviceResponse;
-      }
-
-      case 'DELETE_SUBMISSION': {
-        const serviceResponse = await deleteSubmissionAsAdmin(
-          requestBody as AdminSubmissionDeletion,
-          authenticatedServerClient
-        );
-        return serviceResponse;
-      }
-
-      case 'BULK_DELETION': {
-        const serviceResponse = await doAdminSubmissionsBulkDeletion(
-          requestBody as AdminSubmissionBulkDeletionRequestBody,
           authenticatedServerClient
         );
         return serviceResponse;

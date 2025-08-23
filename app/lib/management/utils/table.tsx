@@ -1,10 +1,9 @@
+import { ArrowUpDown } from 'lucide-react';
 import { z } from 'zod';
+import { Button } from '~/components/ui/button';
 import { PaginationSettingsSchema } from '~/lib/pagination/types';
 import type { TableData } from '~/lib/table/types';
-import type { PaginatedSubmissions } from '../types';
-import type { SubmissionStatus } from './utils';
-import { Button } from '~/components/ui/button';
-import { ArrowUpDown } from 'lucide-react';
+import type { SubmissionStatus } from '../types';
 
 export function getSubmissionStatusBadgeColors(status: SubmissionStatus) {
   switch (status) {
@@ -28,11 +27,10 @@ export function getSubmissionStatusBadgeColors(status: SubmissionStatus) {
 const PaginatedanySchema = PaginationSettingsSchema.extend({
   content: z.any().array(),
 });
-type Paginatedany = z.infer<typeof PaginatedanySchema>;
-
+export type PaginatedData = z.infer<typeof PaginatedanySchema>;
 
 export function transformPaginatedSubmissionsToTableData<T>(
-  apiResponse: Paginatedany
+  apiResponse: PaginatedData
 ): TableData<T> {
   return {
     content: apiResponse.content as T[],
@@ -43,13 +41,8 @@ export function transformPaginatedSubmissionsToTableData<T>(
   };
 }
 
-export function mapToSubmissionsTableData(
-  originalData: PaginatedSubmissions,
-): Paginatedany {
-  return {
-    ...originalData,
-    content: originalData.content,
-  };
+export function mapToSubmissionsTableData(originalData: PaginatedData): any[] {
+  return originalData.content;
 }
 
 // Memoized column header creator
@@ -67,15 +60,15 @@ export function createSortableHeader(title: string) {
 
 export type DateRangeValue = {
   from: string;
-  to: string
-}
+  to: string;
+};
 
 export type DateRange = {
   label: string;
   fromParam: string;
   toParam: string;
   getValue: () => DateRangeValue;
-}
+};
 
 const createDateRange = (
   daysAgo: number,
@@ -86,7 +79,7 @@ const createDateRange = (
   label,
   fromParam,
   toParam,
-  getValue: () => ({} as DateRangeValue),
+  getValue: () => ({}) as DateRangeValue,
 });
 
 export const generalDateRanges = [
@@ -99,14 +92,12 @@ export const generalDateRanges = [
     label: 'Este año',
     fromParam: 'createdFrom',
     toParam: 'createdTo',
-    getValue: () => {
-    },
+    getValue: () => {},
   },
   {
     label: 'Año pasado',
     fromParam: 'createdFrom',
     toParam: 'createdTo',
-    getValue: () => {
-    },
+    getValue: () => {},
   },
 ];

@@ -1,6 +1,5 @@
 import { CalendarIcon, Search, X } from 'lucide-react';
 import { useSearchParams } from 'react-router';
-import { ProgramSwitcher } from './program-switcher';
 import { Button } from '~/components/ui/button';
 import {
   DropdownMenu,
@@ -11,8 +10,9 @@ import {
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
 import { Input } from '~/components/ui/input';
-import { cn } from '~/lib/utils';
 import type { DateRange } from '~/lib/management/utils/table';
+import { cn } from '~/lib/utils';
+import { ProgramSwitcher } from './program-switcher';
 
 interface TableToolbarProps {
   children?: React.ReactNode;

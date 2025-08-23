@@ -10,14 +10,8 @@ type SubmissionManagementModalState = {
 
 type SubmissionManagementModalContextType = {
   submissionManagementModalState: SubmissionManagementModalState;
-  openSingleModal: (
-    action: SubmissionManagementAction,
-    task: any
-  ) => void;
-  openBulkModal: (
-    action: SubmissionManagementAction,
-    tasks: any[]
-  ) => void;
+  openSingleModal: (action: SubmissionManagementAction, task: any) => void;
+  openBulkModal: (action: SubmissionManagementAction, tasks: any[]) => void;
   closeAssignationModal: () => void;
 };
 
@@ -37,10 +31,7 @@ export function SubmissionManagementModalProvider({
       multipleTasks: [],
     });
 
-  const openSingleModal = (
-    action: SubmissionManagementAction,
-    task: any
-  ) => {
+  const openSingleModal = (action: SubmissionManagementAction, task: any) => {
     setSubmissionManagementModalState({
       isOpen: true,
       action,
@@ -49,10 +40,7 @@ export function SubmissionManagementModalProvider({
     });
   };
 
-  const openBulkModal = (
-    action: SubmissionManagementAction,
-    tasks: any[]
-  ) => {
+  const openBulkModal = (action: SubmissionManagementAction, tasks: any[]) => {
     setSubmissionManagementModalState({
       isOpen: true,
       action,

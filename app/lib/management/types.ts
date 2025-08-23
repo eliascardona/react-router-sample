@@ -1,10 +1,23 @@
-import { z } from 'zod';
 import type { FieldValues } from 'react-hook-form';
+import { z } from 'zod';
 import { PaginationSettingsSchema } from '~/lib/pagination/types';
 import { ISODateTimeOptionalNullable } from '../datetime/types';
-import { SubmissionStatusSchema } from '../user/types';
 
-type SortDirection = 'ASC' | 'DESC'
+export const SubmissionStatusSchema = z.enum([
+  'COMPLETED',
+  'REJECTED',
+  'DRAFT',
+  'SUBMITTED',
+  'IN_REVIEW',
+  'APPROVED',
+  'REJECTED',
+  'WITHDRAWN',
+]);
+export type SubmissionStatus = z.infer<typeof SubmissionStatusSchema>;
+
+export const SortDirectionEnum = z.enum(['ASC', 'DESC']);
+
+export type SortDirection = z.infer<typeof SortDirectionEnum>;
 
 /* Components' Props */
 interface SubmissionManagementUIProps {
@@ -66,7 +79,7 @@ export const AdminSubmissionFilterSchema = z.object({
   programId: z.string().uuid().optional(),
   submissionIdentifier: z.string().optional(),
   // Special ones
-  sortDirection: SortDirection,
+  sortDirection: SortDirectionEnum,
   sortByJsonField: z.string().optional(),
   query: z.string().optional(),
 });

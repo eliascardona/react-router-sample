@@ -1,13 +1,12 @@
+import type { JSX } from 'react';
 import { useNavigation, useSubmit } from 'react-router';
 import type { TableParams } from '~/lib/pagination/types';
 import {
   type AdminSubmissionFilter,
   type SubmissionManagementAction,
   type SubmissionManagementRequestBody,
+  type SubmissionStatus,
 } from '../types';
-import type { JSX } from 'react';
-
-export type SubmissionStatus = 'DRAFT' | 'SUBMITTED' | 'IN_REVIEW' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN'
 
 /**
  * Utility to parse search params back to filter and table params

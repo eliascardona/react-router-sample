@@ -1,6 +1,6 @@
 import { CheckCircle2 } from 'lucide-react';
-import { TableRowDialogFooter } from '../common/table-row-dialog-footer';
 import type { SubmissionManagementAction } from '~/lib/management/types';
+import { TableRowDialogFooter } from '../common/table-row-dialog-footer';
 import { BulkWithdrawalDialogContent } from './bulk-withdrawal/main-view';
 import { WithdrawDialogContent } from './withdraw/main-view';
 
