@@ -1,9 +1,9 @@
 import type { ApiClient, QueryParams } from '~/lib/api/client';
 import type { TableParams } from '~/lib/pagination/types';
 import {
-  PaginatedSubmissionsSchema,
-  type BulkWithdrawalRequestBody,
-  type PaginatedSubmissions,
+  PaginatedResultSchema,
+  type BulkTransactionRequestBody,
+  type PaginatedResult,
   type WithdrawRequestBody,
 } from './types';
 
@@ -18,11 +18,11 @@ export type GenericServerResponse =
 /**
  * Paginated submissions with advanced filtering. Ready to be watched by an admin.
  */
-export async function getAllSubmissionsWithAdvancedFiltering(
+export async function listMachines(
   filter: Partial<any>,
   params: TableParams,
   client: ApiClient
-): Promise<PaginatedSubmissions> {
+): Promise<any> {
   try {
     const queryParams: QueryParams = {
       page: params.page,
@@ -34,16 +34,16 @@ export async function getAllSubmissionsWithAdvancedFiltering(
       ...filter,
     };
 
-    const response = await client.get<PaginatedSubmissions>(
+    const response = await client.get<any>(
       `/machines/get`,
       {},
       queryParams
     );
 
-    return PaginatedSubmissionsSchema.parse(response);
+    return response;
   } catch (error) {
     console.error(
-      'Error fetching admin submissions with advanced filtering:',
+      'Error listing all machines:',
       error
     );
     throw error;
@@ -77,8 +77,8 @@ export async function withdrawSubmissionAsAdmin(
  * If an invalid one is present in request body, the transaction will
  * be inmediatly aborted on the server.
  */
-export async function doBulkWithdrawalOfSubmissions(
-  bulkWithdrawalRequestBody: BulkWithdrawalRequestBody,
+export async function doBulkTransactionOfSubmissions(
+  bulkWithdrawalRequestBody: BulkTransactionRequestBody,
   client: ApiClient
 ): Promise<GenericServerResponse> {
   try {

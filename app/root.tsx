@@ -9,6 +9,9 @@ import {
 import { Toaster } from 'sonner';
 import type { Route } from './+types/root';
 import './app.css';
+import type { unstable_MiddlewareFunction } from 'react-router';
+import { globalStorageMiddleware } from './lib/api/client.server';
+import { authSessionMiddleware, validateTokenMiddleware } from './lib/api/auth';
 // import { globalStorageMiddleware } from './lib/api/client.server';
 
 export const links: Route.LinksFunction = () => [
@@ -80,4 +83,8 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   );
 }
 
-// export const unstable_middleware: unstable_MiddlewareFunction<Response>[] = [globalStorageMiddleware];
+export const unstable_middleware: unstable_MiddlewareFunction<Response>[] = [
+  authSessionMiddleware,
+  validateTokenMiddleware,
+  globalStorageMiddleware
+];

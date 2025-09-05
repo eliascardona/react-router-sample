@@ -2,9 +2,9 @@ import type { JSX } from 'react';
 import { useNavigation, useSubmit } from 'react-router';
 import type { TableParams } from '~/lib/pagination/types';
 import {
-  type AdminSubmissionFilter,
-  type SubmissionManagementAction,
-  type SubmissionManagementRequestBody,
+  type EntityManagementFilter,
+  type EntityManagementAction,
+  type EntityManagementRequestBody,
   type SubmissionStatus,
 } from '../types';
 
@@ -14,8 +14,8 @@ import {
  */
 export const parseSearchParamsToSubmissionFilters = (
   searchParams: URLSearchParams
-): { filter: Partial<AdminSubmissionFilter>; params: TableParams } => {
-  const filter: Partial<AdminSubmissionFilter> = {};
+): { filter: Partial<EntityManagementFilter>; params: TableParams } => {
+  const filter: Partial<EntityManagementFilter> = {};
   // Parse pagination params - Convert from 1-based URL param to 0-based for backend
   const pageFromUrl = parseInt(searchParams.get('page') || '1', 10);
   const zeroBasedPage = Math.max(0, pageFromUrl - 1); // Convert 1-based to 0-based
@@ -31,26 +31,16 @@ export const parseSearchParamsToSubmissionFilters = (
   const query = searchParams.get('query');
   if (query) filter.query = query;
 
-  const programId = searchParams.get('programId');
-  if (programId) filter.programId = programId;
-
-  const submissionIdentifier = searchParams.get('submissionIdentifier');
-  if (submissionIdentifier) filter.submissionIdentifier = submissionIdentifier;
-
   // Parse array fields
   const statuses = searchParams.getAll('status');
   if (statuses.length > 0) {
-    filter.status = [...statuses] as SubmissionStatus[];
+    filter.status = [...statuses] as string[];
   }
 
   // Parse date fields - keeping them as ISO strings since that's what your schema expects
   const dateFields = [
     'createdFrom',
     'createdTo',
-    'assignedFrom',
-    'assignedTo',
-    'deadlineFrom',
-    'deadlineTo',
   ] as const;
 
   dateFields.forEach((field) => {
@@ -88,11 +78,11 @@ export function getSubmissionStatusTranslation(status: SubmissionStatus) {
   }
 }
 
-export function useSubmissionManagementActionTrigger(programId: string) {
+export function useEntityManagementActionTrigger(programId: string) {
   const submit = useSubmit();
   const navigation = useNavigation();
 
-  const triggerAction = (formValues: SubmissionManagementRequestBody) => {
+  const triggerAction = (formValues: EntityManagementRequestBody) => {
     submit(formValues, {
       method: 'POST',
       action: `/app/programas/${programId}/solicitudes`,
@@ -110,7 +100,7 @@ export function useSubmissionManagementActionTrigger(programId: string) {
 export type MenuItem = {
   label: string;
   icon: JSX.Element;
-  action: SubmissionManagementAction;
+  action: EntityManagementAction;
 };
 
 export function disableDropdownMenuItem(

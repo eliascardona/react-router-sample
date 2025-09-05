@@ -1,8 +1,10 @@
-import { SubmissionsDashboard } from '~/components/management/submissions-dashboard';
+import { EntityManagementSampleTable } from '~/components/management/entity-dashboard';
 import { createTokenClient } from '~/lib/api/client';
 import { parseSearchParamsToSubmissionFilters } from '~/lib/management/utils/utils';
 import { generateDataPageBaseFormat } from '~/lib/pagination/utils';
 import type { Route } from './+types/management-table._index';
+import { listMachines } from '~/lib/management/api';
+import { authenticatedServerClient } from '~/lib/api/client.server';
 
 export function meta(args: Route.MetaArgs) {
   return [
@@ -30,21 +32,16 @@ export async function loader(args: Route.LoaderArgs) {
     url.searchParams
   );
 
-  const customTokenClient = createTokenClient(
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OGE2NDJhMTE3OWJiMjVkOGU3MGM1MjgiLCJ1c2VybmFtZSI6ImVsaWFzY2FyZG9uYXJvZCIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzU1OTE1MTMxLCJleHAiOjE3NTU5MTg3MzF9.K6ElUbGW08JFI4DVRHrzUYQuAQDNhyLYUcN1wslgMYA'
+  const response = await listMachines(
+    filter,
+    params,
+    authenticatedServerClient
   );
-  const response = await customTokenClient.get<any>(`/machines/get`);
   console.log(response.content);
 
-  const pageFormat = {
-    ...generateDataPageBaseFormat(response),
-    content: response.success ? response.content : [],
-  };
-  return {
-    dataPage: pageFormat,
-  };
+  return { dataPage: response };
 }
 
-export default function NoSqlManagementTable() {
-  return <SubmissionsDashboard />;
+export default function EntityManagementRoute() {
+  return <EntityManagementSampleTable />;
 }

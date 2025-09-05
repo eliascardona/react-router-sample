@@ -1,10 +1,10 @@
-import type { BulkWithdrawalUIProps } from '~/lib/management/types';
-import { BulkWithdrawalActionTrigger } from './action-trigger';
+import type { BulkTransactionUIProps } from '~/lib/management/types';
+import { BulkTransactionActionTrigger } from './action-trigger';
 
-export function BulkWithdrawalDialogContent({
+export function BulkTransactionDialogContent({
   programId,
   submissionManagementView,
-}: BulkWithdrawalUIProps) {
+}: BulkTransactionUIProps) {
   const submissionIds = submissionManagementView.map(
     (submission) => submission.id
   );
@@ -14,7 +14,7 @@ export function BulkWithdrawalDialogContent({
       <div>
         <p className="text-3xl font-medium">Retiro de solicitudes en lote</p>
       </div>
-      <BulkWithdrawalActionTrigger
+      <BulkTransactionActionTrigger
         programId={programId}
         submissionIds={submissionIds}
       />

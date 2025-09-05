@@ -1,0 +1,54 @@
+import { Controller, type FieldPath, type RegisterOptions } from 'react-hook-form';
+import z from 'zod';
+import { Input } from '~/components/ui/input';
+import { cn } from '~/lib/utils';
+import { GenericFieldError } from './ui/generic-field-error';
+import { GenericLabel } from './ui/generic-label';
+
+function generateZodSchema() {
+    return z.string().min(2)
+}
+
+export const FormField = ({
+    fieldName,
+    fieldLabel,
+}: {
+    fieldName: string;
+    fieldLabel: string;
+}) => {
+    const fieldSchema = generateZodSchema();
+    const rules = {
+        required: 'Campo vacío',
+        validate: (value) => {
+            const result = fieldSchema.safeParse(value);
+            return result.success ? true : result.error?.errors[0]?.message;
+        },
+    } as RegisterOptions<any, FieldPath<any>>;
+
+    return (
+        <>
+            <GenericLabel
+                label={fieldLabel}
+                htmlFor={fieldName}
+            />
+            <Controller
+                name={fieldName}
+                rules={rules}
+                render={({ field, fieldState }) => (
+                    <>
+                        <Input
+                            {...field}
+                            type="text"
+                            onChange={field.onChange}
+                            className={cn(
+                                'bg-background',
+                                fieldState.error ? 'ring-destructive ring-1' : ''
+                            )}
+                        />
+                        <GenericFieldError fieldError={fieldState.error} />
+                    </>
+                )}
+            />
+        </>
+    );
+};
