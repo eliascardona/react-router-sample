@@ -1,17 +1,15 @@
 import type { PaginatedData } from '../management/utils/table';
 
-export function generateDataPageBaseFormat(response: any) {
-  const dataPageBaseFormat = {
+export function generateBlankPage() {
+  return {
     totalPages: 1,
-    totalElements: response.length,
+    totalElements: 0,
     size: 20,
     number: 0,
     first: true,
     last: false,
-    numberOfElements: response.length,
+    numberOfElements: 0,
     empty: false,
     content: [],
   } as PaginatedData;
-
-  return dataPageBaseFormat;
 }

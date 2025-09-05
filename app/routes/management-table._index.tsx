@@ -1,7 +1,8 @@
-import { SubmissionsDashboard } from '~/components/management/submissions-dashboard';
-import { createTokenClient } from '~/lib/api/client';
-import { parseSearchParamsToSubmissionFilters } from '~/lib/management/utils/utils';
-import { generateDataPageBaseFormat } from '~/lib/pagination/utils';
+import { EntityManagementSampleTable } from '~/components/management/entity-dashboard';
+import { authenticatedServerClient } from '~/lib/api/client.server';
+import { listMachines } from '~/lib/management/api';
+import { parseSearchParamsToApiFilters } from '~/lib/management/utils/utils';
+import { generateBlankPage } from '~/lib/pagination/utils';
 import type { Route } from './+types/management-table._index';
 
 export function meta(args: Route.MetaArgs) {
@@ -19,32 +20,25 @@ export async function action(args: Route.ActionArgs) {
 
   if (!formData) throw new Error('Error in request body');
 
-  console.log(formData);
-
   return formData;
 }
 
 export async function loader(args: Route.LoaderArgs) {
   const url = new URL(args.request.url);
-  const { filter, params } = parseSearchParamsToSubmissionFilters(
-    url.searchParams
-  );
+  const { filter, params } = parseSearchParamsToApiFilters(url.searchParams);
 
-  const customTokenClient = createTokenClient(
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OGE2NDJhMTE3OWJiMjVkOGU3MGM1MjgiLCJ1c2VybmFtZSI6ImVsaWFzY2FyZG9uYXJvZCIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzU1OTE1MTMxLCJleHAiOjE3NTU5MTg3MzF9.K6ElUbGW08JFI4DVRHrzUYQuAQDNhyLYUcN1wslgMYA'
+  const response = await listMachines(
+    filter,
+    params,
+    authenticatedServerClient
   );
-  const response = await customTokenClient.get<any>(`/machines/get`);
-  console.log(response.content);
+  console.log(response);
 
-  const pageFormat = {
-    ...generateDataPageBaseFormat(response),
-    content: response.success ? response.content : [],
-  };
   return {
-    dataPage: pageFormat,
+    dataPage: response || generateBlankPage(),
   };
 }
 
-export default function NoSqlManagementTable() {
-  return <SubmissionsDashboard />;
+export default function EntityManagementRoute() {
+  return <EntityManagementSampleTable />;
 }

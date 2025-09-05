@@ -2,26 +2,25 @@ import type { JSX } from 'react';
 import { useNavigation, useSubmit } from 'react-router';
 import type { TableParams } from '~/lib/pagination/types';
 import {
-  type AdminSubmissionFilter,
-  type SubmissionManagementAction,
-  type SubmissionManagementRequestBody,
-  type SubmissionStatus,
+  type EntityManagementAction,
+  type EntityManagementFilter,
+  type EntityManagementRequestBody,
 } from '../types';
 
 /**
  * Utility to parse search params back to filter and table params
  * This is useful for React Router v7 loaders
  */
-export const parseSearchParamsToSubmissionFilters = (
+export const parseSearchParamsToApiFilters = (
   searchParams: URLSearchParams
-): { filter: Partial<AdminSubmissionFilter>; params: TableParams } => {
-  const filter: Partial<AdminSubmissionFilter> = {};
-  // Parse pagination params - Convert from 1-based URL param to 0-based for backend
+): { filter: Partial<EntityManagementFilter>; params: TableParams } => {
+  const filter: Partial<EntityManagementFilter> = {};
+
   const pageFromUrl = parseInt(searchParams.get('page') || '1', 10);
   const zeroBasedPage = Math.max(0, pageFromUrl - 1); // Convert 1-based to 0-based
 
   const params: TableParams = {
-    page: zeroBasedPage, // 0-based page index for backend
+    page: zeroBasedPage,
     size: parseInt(searchParams.get('size') || '10', 10),
     sort: searchParams.get('sort') || undefined,
     direction: (searchParams.get('direction') as 'asc' | 'desc') || undefined,
@@ -31,27 +30,14 @@ export const parseSearchParamsToSubmissionFilters = (
   const query = searchParams.get('query');
   if (query) filter.query = query;
 
-  const programId = searchParams.get('programId');
-  if (programId) filter.programId = programId;
-
-  const submissionIdentifier = searchParams.get('submissionIdentifier');
-  if (submissionIdentifier) filter.submissionIdentifier = submissionIdentifier;
-
   // Parse array fields
   const statuses = searchParams.getAll('status');
   if (statuses.length > 0) {
-    filter.status = [...statuses] as SubmissionStatus[];
+    filter.status = [...statuses] as string[];
   }
 
   // Parse date fields - keeping them as ISO strings since that's what your schema expects
-  const dateFields = [
-    'createdFrom',
-    'createdTo',
-    'assignedFrom',
-    'assignedTo',
-    'deadlineFrom',
-    'deadlineTo',
-  ] as const;
+  const dateFields = ['createdFrom', 'createdTo'] as const;
 
   dateFields.forEach((field) => {
     const value = searchParams.get(field);
@@ -69,30 +55,11 @@ export const parseSearchParamsToSubmissionFilters = (
   return { filter, params };
 };
 
-export function getSubmissionStatusTranslation(status: SubmissionStatus) {
-  switch (status) {
-    case 'DRAFT':
-      return 'Borrador';
-    case 'SUBMITTED':
-      return 'Enviado';
-    case 'IN_REVIEW':
-      return 'En revisión';
-    case 'APPROVED':
-      return 'Aprobado';
-    case 'REJECTED':
-      return 'Rechazado';
-    case 'WITHDRAWN':
-      return 'Retirado';
-    default:
-      return '-';
-  }
-}
-
-export function useSubmissionManagementActionTrigger(programId: string) {
+export function useEntityManagementActionTrigger(programId: string) {
   const submit = useSubmit();
   const navigation = useNavigation();
 
-  const triggerAction = (formValues: SubmissionManagementRequestBody) => {
+  const triggerAction = (formValues: EntityManagementRequestBody) => {
     submit(formValues, {
       method: 'POST',
       action: `/app/programas/${programId}/solicitudes`,
@@ -110,7 +77,7 @@ export function useSubmissionManagementActionTrigger(programId: string) {
 export type MenuItem = {
   label: string;
   icon: JSX.Element;
-  action: SubmissionManagementAction;
+  action: EntityManagementAction;
 };
 
 export function disableDropdownMenuItem(

@@ -1,3 +1,4 @@
+import type { unstable_MiddlewareFunction } from 'react-router';
 import {
   isRouteErrorResponse,
   Links,
@@ -9,7 +10,8 @@ import {
 import { Toaster } from 'sonner';
 import type { Route } from './+types/root';
 import './app.css';
-// import { globalStorageMiddleware } from './lib/api/client.server';
+import { authSessionMiddleware, validateTokenMiddleware } from './lib/api/auth';
+import { globalStorageMiddleware } from './lib/server/global-context';
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -80,4 +82,8 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   );
 }
 
-// export const unstable_middleware: unstable_MiddlewareFunction<Response>[] = [globalStorageMiddleware];
+export const unstable_middleware: unstable_MiddlewareFunction<Response>[] = [
+  authSessionMiddleware,
+  validateTokenMiddleware,
+  globalStorageMiddleware,
+];

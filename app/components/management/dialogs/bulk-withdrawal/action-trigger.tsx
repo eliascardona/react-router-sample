@@ -1,28 +1,28 @@
 import { Button } from '~/components/ui/button';
 import {
-  SubmissionManagementActionEnum,
-  type BulkWithdrawalFormProps,
-  type SubmissionManagementRequestBody,
+  EntityManagementActionEnum,
+  type BulkTransactionFormProps,
+  type EntityManagementRequestBody,
 } from '~/lib/management/types';
-import { useSubmissionManagementModal } from '~/lib/management/utils/management-data-context';
-import { useSubmissionManagementActionTrigger } from '~/lib/management/utils/utils';
+import { useTableDialog } from '~/lib/management/utils/table-dialog-context';
+import { useEntityManagementActionTrigger } from '~/lib/management/utils/utils';
 
-export function BulkWithdrawalActionTrigger({
+export function BulkTransactionActionTrigger({
   programId,
   submissionIds,
-}: BulkWithdrawalFormProps) {
-  const { closeAssignationModal } = useSubmissionManagementModal();
+}: BulkTransactionFormProps) {
+  const { closeAssignationModal } = useTableDialog();
   const { triggerAction, isSubmittingForm } =
-    useSubmissionManagementActionTrigger(programId);
+    useEntityManagementActionTrigger(programId);
 
   const requestBody = {
-    intent: SubmissionManagementActionEnum.enum.BULK_WITHDRAWAL,
+    intent: EntityManagementActionEnum.enum.BULK_WITHDRAWAL,
     body: {
       payload: {
         submissionIds: submissionIds,
       },
     },
-  } as SubmissionManagementRequestBody;
+  } as EntityManagementRequestBody;
 
   return (
     <div className="space-y-6">

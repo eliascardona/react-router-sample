@@ -1,11 +1,11 @@
 import { CheckCircle2 } from 'lucide-react';
-import type { SubmissionManagementAction } from '~/lib/management/types';
+import type { EntityManagementAction } from '~/lib/management/types';
 import { TableRowDialogFooter } from '../common/table-row-dialog-footer';
-import { BulkWithdrawalDialogContent } from './bulk-withdrawal/main-view';
+import { BulkTransactionDialogContent } from './bulk-withdrawal/main-view';
 import { WithdrawDialogContent } from './withdraw/main-view';
 
 interface DialogContentProps {
-  managementAction: SubmissionManagementAction | null;
+  managementAction: EntityManagementAction | null;
   programId: string;
   onClose: () => void;
 }
@@ -54,7 +54,7 @@ function DialogContentHandlerUI({
       switch (managementAction) {
         case 'BULK_WITHDRAWAL':
           return (
-            <BulkWithdrawalDialogContent
+            <BulkTransactionDialogContent
               programId={programId}
               submissionManagementView={submissionManagementView}
             />

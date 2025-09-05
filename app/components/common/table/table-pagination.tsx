@@ -80,7 +80,6 @@ export function TablePagination({
     ...labels,
   };
 
-  const displayPage = currentPage + 1;
   const startIndex = totalCount > 0 ? currentPage * pageSize + 1 : 0;
   const endIndex = Math.min((currentPage + 1) * pageSize, totalCount);
 

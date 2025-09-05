@@ -10,8 +10,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
-import type { SubmissionManagementAction } from '~/lib/management/types';
-import { useSubmissionManagementModal } from '~/lib/management/utils/management-data-context';
+import type { EntityManagementAction } from '~/lib/management/types';
+import { useTableDialog } from '~/lib/management/utils/table-dialog-context';
 import {
   disableDropdownMenuItem,
   type MenuItem,
@@ -44,7 +44,7 @@ function DataTableRowActions<TData>({
   row: Row<TData>;
   canWithdrawSubmission: boolean;
 }) {
-  const { openSingleModal } = useSubmissionManagementModal();
+  const { openSingleModal } = useTableDialog();
   const submission = row.original as any;
 
   const menuItems = useMemo(
@@ -52,12 +52,12 @@ function DataTableRowActions<TData>({
       {
         label: 'Retirar solicitud',
         icon: <UserPlus className="mr-2 h-4 w-4" />,
-        action: 'WITHDRAW_SUBMISSION' as SubmissionManagementAction,
+        action: 'WITHDRAW_SUBMISSION' as EntityManagementAction,
       },
       {
         label: 'Eliminar solicitud',
         icon: <UserPlus className="mr-2 h-4 w-4" />,
-        action: 'DELETE_SUBMISSION' as SubmissionManagementAction,
+        action: 'DELETE_SUBMISSION' as EntityManagementAction,
       },
     ],
     []

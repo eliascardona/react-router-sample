@@ -1,6 +1,7 @@
 import type { FieldValues } from 'react-hook-form';
 import { z } from 'zod';
 import { PaginationSettingsSchema } from '~/lib/pagination/types';
+import { GenericServerResponseWithDataSchema } from '../api/types';
 import { ISODateTimeOptionalNullable } from '../datetime/types';
 
 export const SubmissionStatusSchema = z.enum([
@@ -20,40 +21,38 @@ export const SortDirectionEnum = z.enum(['ASC', 'DESC']);
 export type SortDirection = z.infer<typeof SortDirectionEnum>;
 
 /* Components' Props */
-interface SubmissionManagementUIProps {
+interface EntityManagementUIProps {
   submissionManagementView: any;
 }
 
-export interface WithdrawUIProps extends SubmissionManagementUIProps {
+export interface WithdrawUIProps extends EntityManagementUIProps {
   programId: string;
 }
 
-interface SubmissionManagementBulkUIProps {
+interface EntityManagementBulkUIProps {
   submissionManagementView: any[];
 }
 
-export interface BulkWithdrawalUIProps extends SubmissionManagementBulkUIProps {
+export interface BulkTransactionUIProps extends EntityManagementBulkUIProps {
   programId: string;
 }
 
-export interface SubmissionManagementFormsProps {
+export interface EntityManagementFormsProps {
   defaultValues?: FieldValues | undefined;
   formFields?: any[] | undefined;
   programId: string;
 }
 
-export interface SingleWithdrawFormProps
-  extends SubmissionManagementFormsProps {
+export interface SingleTransactionFormProps extends EntityManagementFormsProps {
   submissionId: string;
   submissionIdentifier: string;
 }
 
-export interface BulkWithdrawalFormProps
-  extends SubmissionManagementFormsProps {
+export interface BulkTransactionFormProps extends EntityManagementFormsProps {
   submissionIds: string[];
 }
 
-export interface SubmissionsManagementFormProps<T extends FieldValues> {
+export interface EntityManagementFormProps<T extends FieldValues> {
   formId: string;
   submitLabel: string;
   className?: string;
@@ -67,55 +66,59 @@ export interface SubmissionsManagementFormProps<T extends FieldValues> {
 /*
   Schemas and types to handle business logic
 */
-export const AdminSubmissionFilterSchema = z.object({
+export const EntityManagementFilterSchema = z.object({
   // Base filters
-  status: z.array(SubmissionStatusSchema).optional(),
-  assignedFrom: ISODateTimeOptionalNullable,
-  assignedTo: ISODateTimeOptionalNullable,
+  status: z.string().array().optional(),
   createdFrom: ISODateTimeOptionalNullable,
   createdTo: ISODateTimeOptionalNullable,
-  deadlineFrom: ISODateTimeOptionalNullable,
-  deadlineTo: ISODateTimeOptionalNullable,
-  programId: z.string().uuid().optional(),
-  submissionIdentifier: z.string().optional(),
   // Special ones
   sortDirection: SortDirectionEnum,
   sortByJsonField: z.string().optional(),
   query: z.string().optional(),
 });
-export type AdminSubmissionFilter = z.infer<typeof AdminSubmissionFilterSchema>;
+export type EntityManagementFilter = z.infer<
+  typeof EntityManagementFilterSchema
+>;
 
-export const PaginatedSubmissionsSchema = PaginationSettingsSchema.extend({
+export const PaginatedManagementEntitySchema = PaginationSettingsSchema.extend({
   content: z.any().array(),
 });
-export type PaginatedSubmissions = z.infer<typeof PaginatedSubmissionsSchema>;
+export type PaginatedManagementEntity = z.infer<
+  typeof PaginatedManagementEntitySchema
+>;
+
+const ManagementEntityServerZodSchema =
+  GenericServerResponseWithDataSchema.extend({
+    data: z.any().optional(),
+  });
+export type ManagementEntityServerSchema = z.infer<
+  typeof ManagementEntityServerZodSchema
+>;
 
 /*
   SCHEMAS AND TYPES FOR ACTIONS
 */
-export const SubmissionManagementActionEnum = z.enum([
+export const EntityManagementActionEnum = z.enum([
   'WITHDRAW_SUBMISSION',
   'DELETE_SUBMISSION',
   'BULK_WITHDRAWAL',
   'BULK_DELETION',
   'PREVIEW',
 ]);
-export type SubmissionManagementAction = z.infer<
-  typeof SubmissionManagementActionEnum
->;
+export type EntityManagementAction = z.infer<typeof EntityManagementActionEnum>;
 
-const SubmissionManagementContextSchema = z.object({
+const EntityManagementContextSchema = z.object({
   submissionIdentifier: z.string(),
 });
 
 const WithdrawBodySchema = z.object({
-  context: SubmissionManagementContextSchema,
+  context: EntityManagementContextSchema,
   payload: z.object({
     submissionId: z.string(),
   }),
 });
 
-const BulkWithdrawalBodySchema = z.object({
+const BulkTransactionBodySchema = z.object({
   payload: z.object({
     submissionIds: z.string().array(),
   }),
@@ -124,41 +127,40 @@ const BulkWithdrawalBodySchema = z.object({
 /*
   POLYMORPHIC REQUEST SCHEMA
 */
-const SubmissionManagementRequestBaseSchema = z.object({
-  intent: SubmissionManagementActionEnum,
+const EntityManagementRequestBaseSchema = z.object({
+  intent: EntityManagementActionEnum,
 });
 
-export const WithdrawSchema = SubmissionManagementRequestBaseSchema.extend({
-  intent: z.literal(SubmissionManagementActionEnum.enum.WITHDRAW_SUBMISSION),
+export const WithdrawSchema = EntityManagementRequestBaseSchema.extend({
+  intent: z.literal(EntityManagementActionEnum.enum.WITHDRAW_SUBMISSION),
   body: WithdrawBodySchema,
 });
 export type WithdrawRequestBody = z.infer<typeof WithdrawSchema>;
 
-export const BulkWithdrawalSchema =
-  SubmissionManagementRequestBaseSchema.extend({
-    intent: z.literal(SubmissionManagementActionEnum.enum.BULK_WITHDRAWAL),
-    body: BulkWithdrawalBodySchema,
-  });
-export type BulkWithdrawalRequestBody = z.infer<typeof BulkWithdrawalSchema>;
+export const BulkTransactionSchema = EntityManagementRequestBaseSchema.extend({
+  intent: z.literal(EntityManagementActionEnum.enum.BULK_WITHDRAWAL),
+  body: BulkTransactionBodySchema,
+});
+export type BulkTransactionRequestBody = z.infer<typeof BulkTransactionSchema>;
 
-export const DeletionSchema = SubmissionManagementRequestBaseSchema.extend({
-  intent: z.literal(SubmissionManagementActionEnum.enum.DELETE_SUBMISSION),
+export const DeletionSchema = EntityManagementRequestBaseSchema.extend({
+  intent: z.literal(EntityManagementActionEnum.enum.DELETE_SUBMISSION),
   body: WithdrawBodySchema,
 });
 export type AdminSubmissionDeletion = z.infer<typeof DeletionSchema>;
 
-export const BulkDeletionSchema = SubmissionManagementRequestBaseSchema.extend({
-  intent: z.literal(SubmissionManagementActionEnum.enum.BULK_DELETION),
-  body: BulkWithdrawalBodySchema,
+export const BulkDeletionSchema = EntityManagementRequestBaseSchema.extend({
+  intent: z.literal(EntityManagementActionEnum.enum.BULK_DELETION),
+  body: BulkTransactionBodySchema,
 });
 export type AdminSubmissionBulkDeletionRequestBody = z.infer<
   typeof BulkDeletionSchema
 >;
 
-export const SubmissionManagementRequestBodySchema = z.discriminatedUnion(
+export const EntityManagementRequestBodySchema = z.discriminatedUnion(
   'intent',
-  [WithdrawSchema, BulkWithdrawalSchema, DeletionSchema, BulkDeletionSchema]
+  [WithdrawSchema, BulkTransactionSchema, DeletionSchema, BulkDeletionSchema]
 );
-export type SubmissionManagementRequestBody = z.infer<
-  typeof SubmissionManagementRequestBodySchema
+export type EntityManagementRequestBody = z.infer<
+  typeof EntityManagementRequestBodySchema
 >;

@@ -1,64 +1,42 @@
 import type { Table } from '@tanstack/react-table';
-import { CheckCircle2, Eye, FilePen, Send, Undo2, XCircle } from 'lucide-react';
+import { FilePen, Send } from 'lucide-react';
 import { StatusFilter } from '~/components/common/table/multi-select-filters';
 import { TableToolbar } from '~/components/common/table/table-toolbar';
-import type { SubmissionManagementAction } from '~/lib/management/types';
-import { useSubmissionManagementModal } from '~/lib/management/utils/management-data-context';
+import type { EntityManagementAction } from '~/lib/management/types';
 import {
   generalDateRanges,
   type DateRange,
 } from '~/lib/management/utils/table';
+import { useTableDialog } from '~/lib/management/utils/table-dialog-context';
 import { BulkActionsButtons } from '../bulk-actions/buttons';
 import { ColumnsVisibilityOptions } from './columns-visibility-options';
-import { TABLE_HEADERS } from './submissions-table-columns';
+import { TABLE_HEADERS } from './table-columns';
 
 // Status filter options with icons
 const STATUS_OPTIONS = [
   {
-    value: 'DRAFT',
+    value: 'PAID',
     label: 'Borrador',
     icon: FilePen,
   },
   {
-    value: 'SUBMITTED',
+    value: 'PENDING',
     label: 'Enviado',
     icon: Send,
-  },
-  {
-    value: 'IN_REVIEW',
-    label: 'En Revisión',
-    icon: Eye,
-  },
-  {
-    value: 'APPROVED',
-    label: 'Aprobado',
-    icon: CheckCircle2,
-  },
-  {
-    value: 'REJECTED',
-    label: 'Rechazado',
-    icon: XCircle,
-  },
-  {
-    value: 'WITHDRAWN',
-    label: 'Retirado',
-    icon: Undo2,
   },
 ];
 
 export type BulkActionItem = {
-  action: SubmissionManagementAction;
+  action: EntityManagementAction;
   alias: string;
   onClick: () => void;
 };
 
-interface TaskAssignationToolbarProps {
+interface EntityToolbarProps {
   table: Table<any>;
 }
 
-export function SubmissionsTableToolbar({
-  table,
-}: TaskAssignationToolbarProps) {
+export function EntityTableToolbar({ table }: EntityToolbarProps) {
   return (
     <TableToolbar
       searchPlaceholder="Buscar envíos..."
@@ -74,7 +52,7 @@ export function SubmissionsTableToolbar({
 }
 
 function SubmissionManagementTableActions({ table }: { table: Table<any> }) {
-  const { openBulkModal } = useSubmissionManagementModal();
+  const { openBulkModal } = useTableDialog();
   const selectedRows = table.getSelectedRowModel().rows;
   const selectedTasks = selectedRows.map((row) => row.original);
 

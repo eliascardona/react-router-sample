@@ -1,23 +1,23 @@
 import { Button } from '~/components/ui/button';
 import {
-  SubmissionManagementActionEnum,
-  type SingleWithdrawFormProps,
-  type SubmissionManagementRequestBody,
+  EntityManagementActionEnum,
+  type EntityManagementRequestBody,
+  type SingleTransactionFormProps,
 } from '~/lib/management/types';
-import { useSubmissionManagementModal } from '~/lib/management/utils/management-data-context';
-import { useSubmissionManagementActionTrigger } from '~/lib/management/utils/utils';
+import { useTableDialog } from '~/lib/management/utils/table-dialog-context';
+import { useEntityManagementActionTrigger } from '~/lib/management/utils/utils';
 
 export function SubmissionWithdrawActionTrigger({
   programId,
   submissionId,
   submissionIdentifier,
-}: SingleWithdrawFormProps) {
-  const { closeAssignationModal } = useSubmissionManagementModal();
+}: SingleTransactionFormProps) {
+  const { closeAssignationModal } = useTableDialog();
   const { triggerAction, isSubmittingForm } =
-    useSubmissionManagementActionTrigger(programId);
+    useEntityManagementActionTrigger(programId);
 
   const requestBody = {
-    intent: SubmissionManagementActionEnum.enum.WITHDRAW_SUBMISSION,
+    intent: EntityManagementActionEnum.enum.WITHDRAW_SUBMISSION,
     body: {
       context: {
         submissionIdentifier: submissionIdentifier,
@@ -26,7 +26,7 @@ export function SubmissionWithdrawActionTrigger({
         submissionId: submissionId,
       },
     },
-  } as SubmissionManagementRequestBody;
+  } as EntityManagementRequestBody;
 
   return (
     <div className="space-y-6">

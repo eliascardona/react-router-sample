@@ -29,7 +29,7 @@ const PaginatedanySchema = PaginationSettingsSchema.extend({
 });
 export type PaginatedData = z.infer<typeof PaginatedanySchema>;
 
-export function transformPaginatedSubmissionsToTableData<T>(
+export function transformPaginatedResultToTableData<T>(
   apiResponse: PaginatedData
 ): TableData<T> {
   return {
@@ -41,7 +41,7 @@ export function transformPaginatedSubmissionsToTableData<T>(
   };
 }
 
-export function mapToSubmissionsTableData(originalData: PaginatedData): any[] {
+export function mapToEntityTableData(originalData: PaginatedData): any[] {
   return originalData.content;
 }
 

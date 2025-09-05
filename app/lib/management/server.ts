@@ -1,17 +1,17 @@
 import { authenticatedServerClient } from '~/lib/api/client.server';
+import type { GenericServerResponse } from '../api/types';
 import {
-  doBulkWithdrawalOfSubmissions,
+  doBulkTransactionOfSubmissions,
   withdrawSubmissionAsAdmin,
-  type GenericServerResponse,
 } from './api';
 import type {
-  BulkWithdrawalRequestBody,
-  SubmissionManagementRequestBody,
+  BulkTransactionRequestBody,
+  EntityManagementRequestBody,
   WithdrawRequestBody,
 } from './types';
 
 export async function submissionManagementActionHandler(
-  requestBody: SubmissionManagementRequestBody
+  requestBody: EntityManagementRequestBody
 ): Promise<GenericServerResponse> {
   const intent = requestBody.intent;
   if (!requestBody) return null;
@@ -30,8 +30,8 @@ export async function submissionManagementActionHandler(
       }
 
       case 'BULK_WITHDRAWAL': {
-        const serviceResponse = await doBulkWithdrawalOfSubmissions(
-          requestBody as BulkWithdrawalRequestBody,
+        const serviceResponse = await doBulkTransactionOfSubmissions(
+          requestBody as BulkTransactionRequestBody,
           authenticatedServerClient
         );
         return serviceResponse;

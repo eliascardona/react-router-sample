@@ -1,6 +1,6 @@
 import { Button } from '~/components/ui/button';
 import { cn } from '~/lib/utils';
-import type { BulkActionItem } from '../table/submissions-table-toolbar';
+import type { BulkActionItem } from '../table/table-toolbar';
 
 interface BulkActionsButtonsProps {
   bulkActions: BulkActionItem[];

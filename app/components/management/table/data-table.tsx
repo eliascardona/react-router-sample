@@ -1,21 +1,18 @@
 import { useMemo } from 'react';
 import { useLoaderData } from 'react-router';
 import { GenericDataTable } from '~/components/common/table/generic-data-table';
-import { useSubmissionManagementModal } from '~/lib/management/utils/management-data-context';
-import { transformPaginatedSubmissionsToTableData } from '~/lib/management/utils/table';
+import { transformPaginatedResultToTableData } from '~/lib/management/utils/table';
+import { useTableDialog } from '~/lib/management/utils/table-dialog-context';
 import type { loader } from '~/routes/management-table._index';
 import { TableRowDialog } from '../common/table-row-dialog';
 import { DialogContentHandler } from '../dialogs/dialog-content-handler';
-import {
-  submissionsTableColumns,
-  TABLE_HEADERS,
-} from './submissions-table-columns';
-import { SubmissionsTableToolbar } from './submissions-table-toolbar';
+import { submissionsTableColumns, TABLE_HEADERS } from './table-columns';
+import { EntityTableToolbar } from './table-toolbar';
 
 export function DataTable() {
   const { dataPage } = useLoaderData<typeof loader>();
   const { submissionManagementModalState, closeAssignationModal } =
-    useSubmissionManagementModal();
+    useTableDialog();
 
   const tableData = useMemo(() => {
     if (!dataPage?.content) {
@@ -28,8 +25,7 @@ export function DataTable() {
       };
     }
 
-    const baseTableData =
-      transformPaginatedSubmissionsToTableData<any>(dataPage);
+    const baseTableData = transformPaginatedResultToTableData<any>(dataPage);
 
     return {
       ...baseTableData,
@@ -55,7 +51,7 @@ export function DataTable() {
       <GenericDataTable<any>
         data={tableData}
         columns={submissionsTableColumns}
-        filterComponent={SubmissionsTableToolbar}
+        filterComponent={EntityTableToolbar}
         title="Administración básica de entidades"
         emptyMessage="No se encontraron registros para esta entidad"
         columnLabels={TABLE_HEADERS}

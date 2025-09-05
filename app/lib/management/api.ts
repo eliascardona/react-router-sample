@@ -1,28 +1,22 @@
 import type { ApiClient, QueryParams } from '~/lib/api/client';
 import type { TableParams } from '~/lib/pagination/types';
+import type { GenericServerResponse } from '../api/types';
 import {
-  PaginatedSubmissionsSchema,
-  type BulkWithdrawalRequestBody,
-  type PaginatedSubmissions,
+  PaginatedManagementEntitySchema,
+  type BulkTransactionRequestBody,
+  type ManagementEntityServerSchema,
+  type PaginatedManagementEntity,
   type WithdrawRequestBody,
 } from './types';
-
-export type GenericServerResponse =
-  | {
-      success: boolean;
-      message: string;
-    }
-  | null
-  | undefined;
 
 /**
  * Paginated submissions with advanced filtering. Ready to be watched by an admin.
  */
-export async function getAllSubmissionsWithAdvancedFiltering(
+export async function listMachines(
   filter: Partial<any>,
   params: TableParams,
   client: ApiClient
-): Promise<PaginatedSubmissions> {
+): Promise<PaginatedManagementEntity | null> {
   try {
     const queryParams: QueryParams = {
       page: params.page,
@@ -34,18 +28,17 @@ export async function getAllSubmissionsWithAdvancedFiltering(
       ...filter,
     };
 
-    const response = await client.get<PaginatedSubmissions>(
+    const response = await client.get<ManagementEntityServerSchema>(
       `/machines/get`,
       {},
       queryParams
     );
 
-    return PaginatedSubmissionsSchema.parse(response);
+    if (!response.success) return null;
+
+    return PaginatedManagementEntitySchema.parse(response.data);
   } catch (error) {
-    console.error(
-      'Error fetching admin submissions with advanced filtering:',
-      error
-    );
+    console.error('Error listing all machines:', error);
     throw error;
   }
 }
@@ -77,8 +70,8 @@ export async function withdrawSubmissionAsAdmin(
  * If an invalid one is present in request body, the transaction will
  * be inmediatly aborted on the server.
  */
-export async function doBulkWithdrawalOfSubmissions(
-  bulkWithdrawalRequestBody: BulkWithdrawalRequestBody,
+export async function doBulkTransactionOfSubmissions(
+  bulkWithdrawalRequestBody: BulkTransactionRequestBody,
   client: ApiClient
 ): Promise<GenericServerResponse> {
   try {
