@@ -4,12 +4,12 @@ import { getGlobalStorage } from '../server/global-context';
 export const createAuthenticatedServerClient = () => {
   const getAuthToken = async () => {
     const store = getGlobalStorage();
-    const accessToken = store.accessToken;
+    const token = store.token;
 
-    if (!accessToken) {
+    if (!token) {
       throw new Error('No access token found');
     }
-    return accessToken;
+    return token;
   };
   return createApiClient(getAuthToken);
 };

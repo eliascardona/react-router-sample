@@ -4,7 +4,7 @@ import { getAuthSessionFromContext } from '../api/auth';
 
 const globalStorage = new AsyncLocalStorage<{
   authSession: Session;
-  accessToken?: string;
+  token?: string;
   expiresAt?: number;
 }>();
 
@@ -29,7 +29,7 @@ export const globalStorageMiddleware: unstable_MiddlewareFunction<
     globalStorage.run(
       {
         authSession,
-        accessToken: authSession.get('accessToken') as string | undefined,
+        token: authSession.get('token') as string | undefined,
         expiresAt: authSession.get('expiresAt') as number | undefined,
       },
       () => {

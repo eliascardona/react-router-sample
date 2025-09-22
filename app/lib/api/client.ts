@@ -239,6 +239,8 @@ export const createApiClient = (
     ): Promise<T> => {
       const url = getUrl(endpoint, parameters);
       const options = await createRequestOptions('POST', data, customHeaders);
+      console.log(options);
+
       const response = await fetch(url, options);
       return handleResponse<T>(response);
     },

@@ -1,21 +1,12 @@
-import { Home, Shield } from 'lucide-react';
+import { Info } from 'lucide-react';
 import { Link } from 'react-router';
-
-// export async function loader(args: Route.LoaderArgs) {
-//   const store = getGlobalStorage();
-//   const accessToken = store.accessToken;
-
-//   if (!accessToken) {
-//     throw new Error("Acceso denegado");
-//   }
-// }
 
 export default function AccesoDenegado() {
   return (
     <div className="bg-background flex min-h-screen items-center justify-center px-4">
       <div className="w-full max-w-md space-y-8 text-center">
         <div className="flex justify-center">
-          <Shield className="text-muted-foreground h-12 w-12" strokeWidth={1} />
+          <Info className="text-muted-foreground h-12 w-12" />
         </div>
 
         <div className="space-y-3">
@@ -30,8 +21,7 @@ export default function AccesoDenegado() {
         <div className="space-y-3 pt-4">
           <Link
             to="/"
-            className="text-primary-foreground bg-primary hover:bg-primary/90 focus:ring-ring inline-flex w-full items-center justify-center px-6 py-3 text-sm font-medium transition-colors duration-200 focus:ring-2 focus:ring-offset-2 focus:outline-none">
-            <Home className="mr-2 h-4 w-4" strokeWidth={1.5} />
+            className="text-primary-foreground bg-orange-400 inline-flex w-full items-center justify-center px-6 py-3 text-sm font-medium">
             Volver al Inicio
           </Link>
         </div>

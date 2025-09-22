@@ -22,7 +22,7 @@ export async function action(args: Route.ActionArgs) {
   const result = await performLogin(formData);
 
   if (result) {
-    setAuthSession(result.data);
+    setAuthSession(result);
     return {
       message: 'Thanks, we have recieved your submission',
     };

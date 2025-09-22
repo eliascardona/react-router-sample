@@ -29,7 +29,7 @@ export async function listMachines(
     };
 
     const response = await client.get<ManagementEntityServerSchema>(
-      `/machines/get`,
+      `/products`,
       {},
       queryParams
     );

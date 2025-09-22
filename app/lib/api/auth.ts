@@ -22,7 +22,7 @@ const [authSessionMiddleware, getAuthSessionFromContext] =
   sessionMiddleware(authSessionStorage);
 
 export const AuthResponseSchema = z.object({
-  accessToken: z.string(),
+  token: z.string(),
   user: z.any(),
   expiresIn: z.number(),
 });
@@ -32,14 +32,14 @@ export const setAuthSession = (response: AuthResponse) => {
   const authSession = getAuthSession();
 
   authSession.set('user', response.user);
-  authSession.set('accessToken', response.accessToken);
+  authSession.set('token', response.token);
   authSession.set('expiresAt', Date.now() + response.expiresIn);
 };
 
 export const clearAuthSession = (
   authSession: ReturnType<typeof getAuthSessionFromContext>
 ) => {
-  authSession.unset('accessToken');
+  authSession.unset('token');
   authSession.unset('expiresAt');
 };
 
@@ -56,7 +56,7 @@ export const validateTokenMiddleware: unstable_MiddlewareFunction<
   const authSession = getAuthSessionFromContext(context);
   const sessionData = authSession.data;
 
-  if (!sessionData.user || !sessionData.accessToken) {
+  if (!sessionData.user || !sessionData.token) {
     return next();
   }
 
@@ -67,9 +67,9 @@ export const requireUser: unstable_MiddlewareFunction = ({ context }, next) => {
   const authSession = getAuthSessionFromContext(context);
   const user = authSession.get('user') as any;
   const expiresAt = authSession.get('expiresAt') as number;
-  const accessToken = authSession.get('accessToken');
+  const token = authSession.get('token');
 
-  if (!user || !accessToken || isTokenExpired(expiresAt)) {
+  if (!user || !token || isTokenExpired(expiresAt)) {
     throw redirect('/login');
   }
 
