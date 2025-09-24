@@ -17,20 +17,20 @@ export function meta(args: Route.MetaArgs) {
   ];
 }
 
-export async function action(args: Route.ActionArgs) {
-  const formData = await args.request.json();
+// export async function action(args: Route.ActionArgs) {
+//   const formData = await args.request.json();
 
   if (!formData) throw new Error("You didn't send a request body");
 
   const requestBody = formData as ProductManagementRequestBody;
   const transactionResult = await productManagementActionHandler(requestBody);
 
-  return formData;
-}
+//   return formData;
+// }
 
-export async function loader(args: Route.LoaderArgs) {
-  const url = new URL(args.request.url);
-  const { filter, params } = parseSearchParamsToApiFilters(url.searchParams);
+// export async function loader(args: Route.LoaderArgs) {
+//   const url = new URL(args.request.url);
+//   const { filter, params } = parseSearchParamsToApiFilters(url.searchParams);
 
   const response = await listProducts(
     filter,
@@ -39,10 +39,10 @@ export async function loader(args: Route.LoaderArgs) {
   );
   console.log(response);
 
-  return {
-    dataPage: response || generateBlankPage(),
-  };
-}
+//   return {
+//     dataPage: response || generateBlankPage(),
+//   };
+// }
 
 export default function EntityManagementRoute() {
   return <EntityManagementSampleTable />;
