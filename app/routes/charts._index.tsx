@@ -1,5 +1,5 @@
-import { EntityManagementSampleTable } from '~/components/management/entity-dashboard';
-import type { Route } from './+types/management-table._index';
+import { ChartCatalog } from '~/components/charts/catalog';
+import type { Route } from './+types/charts.$id';
 
 export function meta(args: Route.MetaArgs) {
   return [
@@ -11,6 +11,6 @@ export function meta(args: Route.MetaArgs) {
   ];
 }
 
-export default function EntityManagementRoute() {
-  return <EntityManagementSampleTable />;
+export default function ChartCatalogRoute() {
+  return <ChartCatalog />;
 }
