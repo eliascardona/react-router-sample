@@ -3,26 +3,6 @@ import { z } from 'zod';
 import { Button } from '~/components/ui/button';
 import { PaginationSettingsSchema } from '~/lib/pagination/types';
 import type { TableData } from '~/lib/table/types';
-import type { SubmissionStatus } from '../types';
-
-export function getSubmissionStatusBadgeColors(status: SubmissionStatus) {
-  switch (status) {
-    case 'DRAFT':
-      return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300';
-    case 'SUBMITTED':
-      return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
-    case 'IN_REVIEW':
-      return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
-    case 'APPROVED':
-      return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
-    case 'REJECTED':
-      return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
-    case 'WITHDRAWN':
-      return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300';
-    default:
-      return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300';
-  }
-}
 
 const PaginatedanySchema = PaginationSettingsSchema.extend({
   content: z.any().array(),

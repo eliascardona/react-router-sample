@@ -35,12 +35,12 @@ export function DataTable() {
 
   // Dynamic data model for single assignations or bulk ones
   const assignationViewData = useMemo(() => {
-    if (submissionManagementModalState.singleTask) {
-      return [submissionManagementModalState.singleTask];
+    if (submissionManagementModalState.singleInstance) {
+      return [submissionManagementModalState.singleInstance];
     }
 
-    if (submissionManagementModalState.multipleTasks.length > 0) {
-      return submissionManagementModalState.multipleTasks;
+    if (submissionManagementModalState.multipleInstances.length > 0) {
+      return submissionManagementModalState.multipleInstances;
     }
 
     return [];
@@ -65,8 +65,8 @@ export function DataTable() {
         isOpen={submissionManagementModalState.isOpen}
         onClose={closeAssignationModal}>
         <DialogContentHandler
-          programId={''}
-          submissionManagementView={assignationViewData}
+          productId={''}
+          productManagementView={assignationViewData}
           managementAction={submissionManagementModalState.action}
           onClose={closeAssignationModal}
         />

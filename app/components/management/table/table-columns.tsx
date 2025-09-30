@@ -6,8 +6,8 @@ import { DataTableRowActionsHandler } from './data-table-row-actions';
 
 export const TABLE_HEADERS = {
   select: '',
-  description: 'Descripción',
-  createdAt: 'Fecha de inserción en BD',
+  name: 'Nombre del prod.',
+  createdAt: 'Fecha de creación',
   actions: 'Acciones',
 } as const;
 
@@ -43,18 +43,16 @@ export const submissionsTableColumns: ColumnDef<any>[] = [
 
   // Item description column
   {
-    accessorKey: 'description',
-    header: TABLE_HEADERS['description'],
-    id: 'description',
-    cell: ({ row }) => (
-      <div className="text-lg">{row.getValue('description')}</div>
-    ),
+    accessorKey: 'name',
+    header: TABLE_HEADERS['name'],
+    id: 'name',
+    cell: ({ row }) => <div>{row.getValue('name')}</div>,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
   },
 
-  // Completed at column
+  // Created at column
   {
     accessorKey: 'createdAt',
     header: createSortableHeader(TABLE_HEADERS['createdAt']),

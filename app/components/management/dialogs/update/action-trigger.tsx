@@ -1,32 +1,23 @@
 import { Button } from '~/components/ui/button';
-import {
-  EntityManagementActionEnum,
-  type EntityManagementRequestBody,
-  type SingleTransactionFormProps,
-} from '~/lib/management/types';
+import type { ProductEditionRequestBody } from '~/lib/management/types';
 import { useTableDialog } from '~/lib/management/utils/table-dialog-context';
 import { useEntityManagementActionTrigger } from '~/lib/management/utils/utils';
 
-export function SubmissionWithdrawActionTrigger({
-  programId,
-  submissionId,
-  submissionIdentifier,
-}: SingleTransactionFormProps) {
+export function ProductUpdateActionTrigger({
+  productId,
+  newProductData,
+}: ProductEditionRequestBody['body']) {
   const { closeAssignationModal } = useTableDialog();
   const { triggerAction, isSubmittingForm } =
-    useEntityManagementActionTrigger(programId);
+    useEntityManagementActionTrigger(productId);
 
   const requestBody = {
-    intent: EntityManagementActionEnum.enum.WITHDRAW_SUBMISSION,
+    intent: 'UPDATE',
     body: {
-      context: {
-        submissionIdentifier: submissionIdentifier,
-      },
-      payload: {
-        submissionId: submissionId,
-      },
+      productId,
+      newProductData,
     },
-  } as EntityManagementRequestBody;
+  } as ProductEditionRequestBody;
 
   return (
     <div className="space-y-6">

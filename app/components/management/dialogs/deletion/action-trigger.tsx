@@ -1,33 +1,24 @@
 import { Button } from '~/components/ui/button';
-import {
-  EntityManagementActionEnum,
-  type BulkTransactionFormProps,
-  type EntityManagementRequestBody,
-} from '~/lib/management/types';
+import type { ProductDeletionRequestBody } from '~/lib/management/types';
 import { useTableDialog } from '~/lib/management/utils/table-dialog-context';
 import { useEntityManagementActionTrigger } from '~/lib/management/utils/utils';
 
-export function BulkTransactionActionTrigger({
-  programId,
-  submissionIds,
-}: BulkTransactionFormProps) {
+export function ProductDeletionActionTrigger({
+  productId,
+}: ProductDeletionRequestBody['body']) {
   const { closeAssignationModal } = useTableDialog();
   const { triggerAction, isSubmittingForm } =
-    useEntityManagementActionTrigger(programId);
+    useEntityManagementActionTrigger(productId);
 
   const requestBody = {
-    intent: EntityManagementActionEnum.enum.BULK_WITHDRAWAL,
-    body: {
-      payload: {
-        submissionIds: submissionIds,
-      },
-    },
-  } as EntityManagementRequestBody;
+    intent: 'DELETE',
+    body: { productId },
+  } as ProductDeletionRequestBody;
 
   return (
     <div className="space-y-6">
       <h3 className="justify-self-center text-2xl font-medium">
-        ¿Seguro que deseas retirar las solicitudes seleccionadas?
+        ¿Seguro que deseas retirar la solicitud seleccionada?
       </h3>
       <div className="flex gap-8 justify-self-center">
         <Button

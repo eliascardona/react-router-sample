@@ -4,8 +4,8 @@ import type { EntityManagementAction } from '../types';
 type TableDialogState = {
   isOpen: boolean;
   action: EntityManagementAction | null;
-  singleTask: any | null;
-  multipleTasks: any[];
+  singleInstance: any | null;
+  multipleInstances: any[];
 };
 
 type TableDialogContextType = {
@@ -22,16 +22,16 @@ export function TableDialogProvider({ children }: { children: ReactNode }) {
     useState<TableDialogState>({
       isOpen: false,
       action: null,
-      singleTask: null,
-      multipleTasks: [],
+      singleInstance: null,
+      multipleInstances: [],
     });
 
   const openSingleModal = (action: EntityManagementAction, task: any) => {
     setTableDialogState({
       isOpen: true,
       action,
-      singleTask: task,
-      multipleTasks: [],
+      singleInstance: task,
+      multipleInstances: [],
     });
   };
 
@@ -39,8 +39,8 @@ export function TableDialogProvider({ children }: { children: ReactNode }) {
     setTableDialogState({
       isOpen: true,
       action,
-      singleTask: null,
-      multipleTasks: tasks,
+      singleInstance: null,
+      multipleInstances: tasks,
     });
   };
 
@@ -48,8 +48,8 @@ export function TableDialogProvider({ children }: { children: ReactNode }) {
     setTableDialogState({
       isOpen: false,
       action: null,
-      singleTask: null,
-      multipleTasks: [],
+      singleInstance: null,
+      multipleInstances: [],
     });
   };
 

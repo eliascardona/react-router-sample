@@ -21,7 +21,7 @@ export default function AccesoDenegado() {
         <div className="space-y-3 pt-4">
           <Link
             to="/"
-            className="text-primary-foreground bg-orange-400 inline-flex w-full items-center justify-center px-6 py-3 text-sm font-medium">
+            className="text-primary-foreground inline-flex w-full items-center justify-center bg-orange-400 px-6 py-3 text-sm font-medium">
             Volver al Inicio
           </Link>
         </div>

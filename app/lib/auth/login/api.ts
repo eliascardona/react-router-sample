@@ -8,10 +8,7 @@ export async function performLogin(
   formData: Record<string, any>
 ): Promise<AuthResponse> {
   try {
-    const result = await apiClient.post<AuthResponse>(
-      '/auth/login',
-      formData
-    );
+    const result = await apiClient.post<AuthResponse>('/auth/login', formData);
     return result;
   } catch (error) {
     console.error('Error creating form:', error);

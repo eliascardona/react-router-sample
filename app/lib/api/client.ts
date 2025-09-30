@@ -14,7 +14,7 @@ export type ApiError = {
 
 type AuthTokenProvider = () => Promise<string | null>;
 
-let API_BASE_URL = 'http://localhost:8082';
+let API_BASE_URL = 'http://localhost:8082/api/';
 
 if (typeof window !== 'undefined') {
   API_BASE_URL = import.meta.env.VITE_API_URL ?? API_BASE_URL;

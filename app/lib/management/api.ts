@@ -3,16 +3,15 @@ import type { TableParams } from '~/lib/pagination/types';
 import type { GenericServerResponse } from '../api/types';
 import {
   PaginatedManagementEntitySchema,
-  type BulkTransactionRequestBody,
-  type ManagementEntityServerSchema,
   type PaginatedManagementEntity,
-  type WithdrawRequestBody,
+  type ProductDeletionRequestBody,
+  type ProductEditionRequestBody,
 } from './types';
 
 /**
  * Paginated submissions with advanced filtering. Ready to be watched by an admin.
  */
-export async function listMachines(
+export async function listProducts(
   filter: Partial<any>,
   params: TableParams,
   client: ApiClient
@@ -28,70 +27,55 @@ export async function listMachines(
       ...filter,
     };
 
-    const response = await client.get<ManagementEntityServerSchema>(
-      `/products`,
-      {},
-      queryParams
-    );
+    const response = await client.get(`/products`, {}, queryParams);
 
-    if (!response.success) return null;
-
-    return PaginatedManagementEntitySchema.parse(response.data);
+    return PaginatedManagementEntitySchema.parse(response);
   } catch (error) {
-    console.error('Error listing all machines:', error);
+    console.error('Error retrieving products:', error);
     throw error;
   }
 }
 
-/**
- * Withdraw a any. For staff and admin roles
- */
-export async function withdrawSubmissionAsAdmin(
-  withdrawalRequestBody: WithdrawRequestBody,
+export async function updateProduct(
+  requestBody: ProductEditionRequestBody,
   client: ApiClient
 ): Promise<any> {
   try {
-    const payload = withdrawalRequestBody.body.payload;
-    const submissionId = payload.submissionId;
+    const productId = requestBody.body.productId;
+    const payload = requestBody.body.newProductData;
 
-    const response = await client.post<any>(
-      `/submissions/${submissionId}/withdraw`,
-      {}
+    const response = await client.put<any>(
+      `/product/${productId}/update`,
+      payload
     );
     return response;
   } catch (error) {
-    console.error('Error withdrawing any:', error);
+    console.error('Error updating product:', error);
     throw error;
   }
 }
 
-/**
- * Perform a bulk withdrawal operation only over valid submissions.
- * If an invalid one is present in request body, the transaction will
- * be inmediatly aborted on the server.
- */
-export async function doBulkTransactionOfSubmissions(
-  bulkWithdrawalRequestBody: BulkTransactionRequestBody,
+export async function deleteProduct(
+  requestBody: ProductDeletionRequestBody,
   client: ApiClient
 ): Promise<GenericServerResponse> {
   try {
-    const payload = bulkWithdrawalRequestBody.body.payload;
-    const submissionIds = payload.submissionIds;
+    const productId = requestBody.body.productId;
 
-    const response = await client.post(
-      `/submissions/withdraw/bulk`,
-      submissionIds
-    );
-    if (response != null) {
+    const response = await client.delete<any>(`/product/${productId}`);
+    if (!response) {
       return {
-        success: true,
-        message: `Retiraste ${submissionIds.length} solicitudes exitosamente`,
+        message: 'Error deleting product',
+        success: false,
       };
-    } else {
-      return { success: false, message: 'error desconocido' };
     }
+
+    return {
+      message: 'Product successfully deleted',
+      success: true,
+    };
   } catch (error) {
-    console.error('Error performing the bulk withdrawal:', error);
+    console.error('Error deleting product:', error);
     throw error;
   }
 }

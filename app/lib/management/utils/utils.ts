@@ -4,7 +4,7 @@ import type { TableParams } from '~/lib/pagination/types';
 import {
   type EntityManagementAction,
   type EntityManagementFilter,
-  type EntityManagementRequestBody,
+  type ProductManagementRequestBody,
 } from '../types';
 
 /**
@@ -59,7 +59,7 @@ export function useEntityManagementActionTrigger(programId: string) {
   const submit = useSubmit();
   const navigation = useNavigation();
 
-  const triggerAction = (formValues: EntityManagementRequestBody) => {
+  const triggerAction = (formValues: ProductManagementRequestBody) => {
     submit(formValues, {
       method: 'POST',
       action: `/app/programas/${programId}/solicitudes`,

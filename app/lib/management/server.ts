@@ -1,37 +1,34 @@
 import { authenticatedServerClient } from '~/lib/api/client.server';
 import type { GenericServerResponse } from '../api/types';
-import {
-  doBulkTransactionOfSubmissions,
-  withdrawSubmissionAsAdmin,
-} from './api';
+import { deleteProduct, updateProduct } from './api';
 import type {
-  BulkTransactionRequestBody,
-  EntityManagementRequestBody,
-  WithdrawRequestBody,
+  ProductDeletionRequestBody,
+  ProductEditionRequestBody,
+  ProductManagementRequestBody,
 } from './types';
 
-export async function submissionManagementActionHandler(
-  requestBody: EntityManagementRequestBody
+export async function productManagementActionHandler(
+  requestBody: ProductManagementRequestBody
 ): Promise<GenericServerResponse> {
   const intent = requestBody.intent;
   if (!requestBody) return null;
 
   try {
     switch (intent) {
-      case 'WITHDRAW_SUBMISSION': {
-        const serviceResponse = await withdrawSubmissionAsAdmin(
-          requestBody as WithdrawRequestBody,
+      case 'UPDATE': {
+        const serviceResponse = await updateProduct(
+          requestBody as ProductEditionRequestBody,
           authenticatedServerClient
         );
         return {
           success: true,
-          message: `La solicitud ${serviceResponse.submissionIdentifier} ha sido retirada`,
+          message: 'The product has been successfully updated',
         };
       }
 
-      case 'BULK_WITHDRAWAL': {
-        const serviceResponse = await doBulkTransactionOfSubmissions(
-          requestBody as BulkTransactionRequestBody,
+      case 'DELETE': {
+        const serviceResponse = await deleteProduct(
+          requestBody as ProductDeletionRequestBody,
           authenticatedServerClient
         );
         return serviceResponse;
