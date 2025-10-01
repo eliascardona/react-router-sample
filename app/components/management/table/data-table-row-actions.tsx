@@ -12,10 +12,7 @@ import {
 } from '~/components/ui/dropdown-menu';
 import type { EntityManagementAction } from '~/lib/management/types';
 import { useTableDialog } from '~/lib/management/utils/table-dialog-context';
-import {
-  disableDropdownMenuItem,
-  type MenuItem,
-} from '~/lib/management/utils/utils';
+import type { MenuItem } from '~/lib/management/utils/utils';
 
 interface DataTableRowActionsHandlerProps<TData> {
   row: Row<TData>;
@@ -77,7 +74,7 @@ function DataTableRowActions<TData>({
           {menuItems.map((item, idx) => (
             <DropdownMenuItem
               key={idx}
-              disabled={disableDropdownMenuItem(item, canWithdrawSubmission)}
+              disabled={false}
               onClick={() => {
                 openSingleModal(item.action, submission);
               }}>

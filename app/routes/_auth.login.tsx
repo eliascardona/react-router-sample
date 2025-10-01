@@ -1,7 +1,7 @@
 import { useActionData } from 'react-router';
 import { MainViewLogin } from '~/components/auth/login/main-view';
 import { setAuthSession } from '~/lib/api/auth';
-import { performLogin } from '~/lib/auth/login/api';
+import { performLogin } from '~/lib/auth/api';
 import type { Route } from './+types/management-table._index';
 
 export function meta(args: Route.MetaArgs) {

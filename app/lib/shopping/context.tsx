@@ -39,7 +39,7 @@ export function ShoppingContextProvider({ children }: { children: ReactNode }) {
       (prev) =>
         ({
           ...prev,
-          chargeInfo: data,
+          customerInfo: data,
         }) as TShoppingContext
     );
   };

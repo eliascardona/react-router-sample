@@ -1,30 +1,30 @@
 import { authenticatedServerClient } from '~/lib/api/client.server';
+import { setAuthSession } from '../api/auth';
 import type { GenericServerResponse } from '../api/types';
-import { deleteProduct, updateProduct } from './api';
-import type { ProductManagementRequestBody } from './types';
+import { performSignup } from '../auth/api';
+import { createPaymentIntent } from './api';
+import type { ShoppingRequestBody } from './types';
 
-export async function productManagementActionHandler(
-  requestBody: ProductManagementRequestBody
+export async function shoppingServerActionHandler(
+  requestBody: ShoppingRequestBody
 ): Promise<GenericServerResponse> {
   const intent = requestBody.intent;
   if (!requestBody) return null;
 
   try {
     switch (intent) {
-      case 'UPDATE': {
-        const serviceResponse = await updateProduct(
-          requestBody,
-          authenticatedServerClient
-        );
+      case 'SIGNUP': {
+        const serviceResponse = await performSignup(requestBody);
+        setAuthSession(serviceResponse);
         return {
           success: true,
           message: 'The product has been successfully updated',
         };
       }
 
-      case 'DELETE': {
-        const serviceResponse = await deleteProduct(
-          requestBody,
+      case 'PAYMENT_INTENT': {
+        const serviceResponse = await createPaymentIntent(
+          requestBody.body.priceId,
           authenticatedServerClient
         );
         return serviceResponse;
@@ -38,7 +38,7 @@ export async function productManagementActionHandler(
     }
   } catch (error: any) {
     console.error(
-      'Error performing product management server action:',
+      'Error performing shopping server action:',
       error.message || 'null'
     );
     return null;

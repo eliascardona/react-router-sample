@@ -1,10 +1,8 @@
 import type { JSX } from 'react';
-import { useNavigation, useSubmit } from 'react-router';
 import type { TableParams } from '~/lib/pagination/types';
 import {
   type EntityManagementAction,
   type EntityManagementFilter,
-  type ProductManagementRequestBody,
 } from '../types';
 
 /**
@@ -55,42 +53,8 @@ export const parseSearchParamsToApiFilters = (
   return { filter, params };
 };
 
-export function useEntityManagementActionTrigger(programId: string) {
-  const submit = useSubmit();
-  const navigation = useNavigation();
-
-  const triggerAction = (formValues: ProductManagementRequestBody) => {
-    submit(formValues, {
-      method: 'POST',
-      action: `/app/programas/${programId}/solicitudes`,
-      encType: 'application/json',
-    });
-  };
-  const isSubmittingForm = navigation.state === 'submitting';
-
-  return {
-    triggerAction,
-    isSubmittingForm,
-  };
-}
-
 export type MenuItem = {
   label: string;
   icon: JSX.Element;
   action: EntityManagementAction;
 };
-
-export function disableDropdownMenuItem(
-  item: MenuItem,
-  canWithdrawSubmission: boolean
-) {
-  if (!canWithdrawSubmission && item.action === 'WITHDRAW_SUBMISSION') {
-    return true;
-  }
-
-  if (!canWithdrawSubmission && item.action === 'BULK_WITHDRAWAL') {
-    return true;
-  }
-
-  return false;
-}

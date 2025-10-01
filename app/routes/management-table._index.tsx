@@ -2,7 +2,7 @@ import { EntityManagementSampleTable } from '~/components/management/entity-dash
 import { authenticatedServerClient } from '~/lib/api/client.server';
 import { listProducts } from '~/lib/management/api';
 import { productManagementActionHandler } from '~/lib/management/server';
-import type { ProductManagementRequestBody } from '~/lib/management/types';
+import { ProductManagementRequestBodySchema } from '~/lib/management/types';
 import { parseSearchParamsToApiFilters } from '~/lib/management/utils/utils';
 import { generateBlankPage } from '~/lib/pagination/utils';
 import type { Route } from './+types/management-table._index';
@@ -22,10 +22,10 @@ export async function action(args: Route.ActionArgs) {
 
   if (!formData) throw new Error("You didn't send a request body");
 
-  const requestBody = formData as ProductManagementRequestBody;
+  const requestBody = ProductManagementRequestBodySchema.parse(formData);
   const transactionResult = await productManagementActionHandler(requestBody);
 
-  return formData;
+  return transactionResult;
 }
 
 export async function loader(args: Route.LoaderArgs) {

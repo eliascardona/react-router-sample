@@ -1,15 +1,14 @@
 import { Button } from '~/components/ui/button';
 import type { ProductEditionRequestBody } from '~/lib/management/types';
 import { useTableDialog } from '~/lib/management/utils/table-dialog-context';
-import { useEntityManagementActionTrigger } from '~/lib/management/utils/utils';
+import { useServerActionTrigger } from '~/lib/utils/utils';
 
 export function ProductUpdateActionTrigger({
   productId,
   newProductData,
 }: ProductEditionRequestBody['body']) {
   const { closeAssignationModal } = useTableDialog();
-  const { triggerAction, isSubmittingForm } =
-    useEntityManagementActionTrigger(productId);
+  const { triggerAction, isSubmittingForm } = useServerActionTrigger();
 
   const requestBody = {
     intent: 'UPDATE',
@@ -18,6 +17,12 @@ export function ProductUpdateActionTrigger({
       newProductData,
     },
   } as ProductEditionRequestBody;
+
+  const triggerOptions = {
+    method: 'POST' as const,
+    action: `/management-table`,
+    encType: 'application/json' as const,
+  };
 
   return (
     <div className="space-y-6">
@@ -37,7 +42,7 @@ export function ProductUpdateActionTrigger({
           disabled={isSubmittingForm}
           className="bg-red-400 text-white focus:ring-2 focus:ring-black focus:outline-none"
           onClick={() => {
-            triggerAction(requestBody);
+            triggerAction(requestBody, triggerOptions);
             closeAssignationModal();
           }}>
           {isSubmittingForm ? 'Retirando...' : 'Sí, retirar'}

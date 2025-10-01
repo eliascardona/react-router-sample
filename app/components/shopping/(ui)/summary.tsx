@@ -1,4 +1,5 @@
-import { useShoppingContext } from '~/lib/shopping/context';
+import { useLoaderData } from 'react-router';
+import type { loader } from '~/routes/management-table._index';
 import { FormattedAmount } from './formatted-amount';
 
 const splitPrice = (chargeInfoTemp: any) => {
@@ -20,7 +21,7 @@ const splitPrice = (chargeInfoTemp: any) => {
 };
 
 export function ProductPriceSummary() {
-  const { chargeInfo } = useShoppingContext();
+  const { chargeInfo } = useLoaderData<typeof loader>();
   const priceFields = splitPrice(chargeInfo);
 
   return (
