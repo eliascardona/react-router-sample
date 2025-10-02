@@ -54,25 +54,20 @@ export function EntityTableToolbar({ table }: EntityToolbarProps) {
 function SubmissionManagementTableActions({ table }: { table: Table<any> }) {
   const { openBulkModal } = useTableDialog();
   const selectedRows = table.getSelectedRowModel().rows;
-  const selectedTasks = selectedRows.map((row) => row.original);
+  const selectedRecords = selectedRows.map((row) => row.original);
 
   const bulkActions: BulkActionItem[] = [
     {
-      action: 'BULK_WITHDRAWAL',
-      alias: 'Retirar solicitudes',
-      onClick: () => openBulkModal('BULK_WITHDRAWAL', selectedTasks),
-    },
-    {
-      action: 'BULK_DELETION',
-      alias: 'Eliminar selección',
-      onClick: () => openBulkModal('BULK_DELETION', selectedTasks),
+      action: 'DELETE',
+      alias: 'Eliminar registros',
+      onClick: () => openBulkModal('DELETE', selectedRecords),
     },
   ];
 
   return (
     <>
       <div className="flex shrink-0 items-center gap-2 pr-10">
-        {selectedTasks.length > 0 && (
+        {selectedRecords.length > 0 && (
           <>
             <p>Decida que hacer</p>
             <BulkActionsButtons bulkActions={bulkActions} />

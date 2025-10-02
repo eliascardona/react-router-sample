@@ -1,12 +1,15 @@
 import type { ApiClient } from '../api/client';
+import { PriceSearchResultSchema, type PriceSearchResult } from './types';
 
 export async function searchStripePriceByProductId(
   productId: string,
   client: ApiClient
-): Promise<any> {
+): Promise<PriceSearchResult> {
   try {
-    const response = await client.get<any>(`/stripe/price`, { productId });
-    return response;
+    const response = await client.get<PriceSearchResult>(`/stripe/price`, {
+      productId,
+    });
+    return PriceSearchResultSchema.parse(response);
   } catch (error) {
     console.error('Error searching stripe price:', error);
     throw error;

@@ -1,5 +1,5 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
-import { type Session, type unstable_MiddlewareFunction } from 'react-router';
+import { type MiddlewareFunction, type Session } from 'react-router';
 import { getAuthSessionFromContext } from '../api/auth';
 
 const globalStorage = new AsyncLocalStorage<{
@@ -21,9 +21,10 @@ export const getAuthSession = () => {
   return store.authSession;
 };
 
-export const globalStorageMiddleware: unstable_MiddlewareFunction<
-  Response
-> = async ({ context }, next) => {
+export const globalStorageMiddleware: MiddlewareFunction<Response> = async (
+  { context },
+  next
+) => {
   const authSession = getAuthSessionFromContext(context);
   return new Promise((resolve) => {
     globalStorage.run(

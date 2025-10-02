@@ -1,8 +1,8 @@
 import {
   createCookieSessionStorage,
-  redirect,
-  type unstable_MiddlewareFunction,
-} from 'react-router';
+  type MiddlewareFunction,
+} from 'node_modules/react-router/dist/production';
+import { redirect } from 'react-router';
 import { unstable_createSessionMiddleware as sessionMiddleware } from 'remix-utils/middleware/session';
 import { z } from 'zod';
 import { getAuthSession } from '../server/global-context';
@@ -28,12 +28,18 @@ export const AuthResponseSchema = z.object({
 });
 export type AuthResponse = z.infer<typeof AuthResponseSchema>;
 
-export const setAuthSession = (response: AuthResponse) => {
+export const setAuthSession = async (response: AuthResponse) => {
   const authSession = getAuthSession();
 
   authSession.set('user', response.user);
   authSession.set('token', response.token);
   authSession.set('expiresAt', Date.now() + response.expiresIn);
+
+  return new Response(null, {
+    headers: {
+      'Set-Cookie': await authSessionStorage.commitSession(authSession),
+    },
+  });
 };
 
 export const clearAuthSession = (
@@ -50,9 +56,10 @@ const isTokenExpired = (expiresAt: number): boolean => {
   return Date.now() >= expiresAt - buffer;
 };
 
-export const validateTokenMiddleware: unstable_MiddlewareFunction<
-  Response
-> = async ({ context }, next) => {
+export const validateTokenMiddleware: MiddlewareFunction<Response> = async (
+  { context },
+  next
+) => {
   const authSession = getAuthSessionFromContext(context);
   const sessionData = authSession.data;
 
@@ -63,7 +70,7 @@ export const validateTokenMiddleware: unstable_MiddlewareFunction<
   return next();
 };
 
-export const requireUser: unstable_MiddlewareFunction = ({ context }, next) => {
+export const requireUser: MiddlewareFunction = ({ context }, next) => {
   const authSession = getAuthSessionFromContext(context);
   const user = authSession.get('user') as any;
   const expiresAt = authSession.get('expiresAt') as number;

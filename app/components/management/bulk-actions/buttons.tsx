@@ -16,7 +16,7 @@ export function BulkActionsButtons({ bulkActions }: BulkActionsButtonsProps) {
           size="sm"
           className={cn(
             'border border-dashed',
-            action.action === 'BULK_DELETION'
+            action.action === 'DELETE'
               ? 'border-red-600 bg-red-200 text-red-800 hover:bg-red-200 hover:text-red-900'
               : 'border-blue-400 bg-blue-100 text-blue-700 hover:bg-blue-300 hover:text-blue-800'
           )}

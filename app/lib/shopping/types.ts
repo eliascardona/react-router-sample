@@ -1,6 +1,16 @@
 import { z } from 'zod';
 
 /*
+  API RESPONSES
+*/
+export const PriceSearchResultSchema = z.object({
+  id: z.string(),
+  unitAmount: z.number(),
+  currency: z.string(),
+});
+export type PriceSearchResult = z.infer<typeof PriceSearchResultSchema>;
+
+/*
   SCHEMAS AND TYPES FOR ACTIONS
 */
 export const ShoppingActionEnum = z.enum([
@@ -58,7 +68,7 @@ const ShoppingActionResultBaseSchema = z.object({
 
 export const ShoppingSignupResultSchema = ShoppingActionResultBaseSchema.extend(
   {
-    type: z.literal(ShoppingActionEnum.enum.PAYMENT_INTENT),
+    type: z.literal(ShoppingActionEnum.enum.SIGNUP),
     body: z.string(),
   }
 );

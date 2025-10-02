@@ -1,4 +1,4 @@
-import type { unstable_MiddlewareFunction } from 'react-router';
+import type { MiddlewareFunction } from 'react-router';
 import {
   isRouteErrorResponse,
   Links,
@@ -82,7 +82,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   );
 }
 
-export const unstable_middleware: unstable_MiddlewareFunction<Response>[] = [
+export const middleware: MiddlewareFunction<Response>[] = [
   authSessionMiddleware,
   validateTokenMiddleware,
   globalStorageMiddleware,

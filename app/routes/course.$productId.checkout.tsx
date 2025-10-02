@@ -30,12 +30,14 @@ export async function action(args: Route.ActionArgs) {
 export async function loader(args: Route.LoaderArgs) {
   const { productId } = args.params;
 
-  const response = await searchStripePriceByProductId(
+  const priceSearchResult = await searchStripePriceByProductId(
     productId,
     authenticatedServerClient
   );
 
-  return { response };
+  return {
+    chargeInfo: priceSearchResult,
+  };
 }
 
 export default function CheckoutPage() {

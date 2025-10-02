@@ -1,8 +1,9 @@
 import { useLoaderData } from 'react-router';
-import type { loader } from '~/routes/management-table._index';
+import type { PriceSearchResult } from '~/lib/shopping/types';
+import type { loader } from '~/routes/course.$productId.checkout';
 import { FormattedAmount } from './formatted-amount';
 
-const splitPrice = (chargeInfoTemp: any) => {
+const splitPrice = (chargeInfoTemp: PriceSearchResult) => {
   let realUnitAmount = chargeInfoTemp.unitAmount / 100;
   let initialUnitAmount = (chargeInfoTemp.unitAmount / 100) * 0.84;
   let tax = initialUnitAmount * 0.16;

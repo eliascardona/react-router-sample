@@ -6,7 +6,7 @@ export default {
   ssr: true,
   future: {
     unstable_optimizeDeps: true,
-    unstable_middleware: true,
+    v8_middleware: true,
     unstable_splitRouteModules: true,
     unstable_viteEnvironmentApi: true,
     unstable_subResourceIntegrity: true,

@@ -22,6 +22,8 @@ export async function action(args: Route.ActionArgs) {
   const result = await performLogin(formData);
 
   if (result) {
+    console.log(result);
+
     setAuthSession(result);
     return {
       message: 'Thanks, we have recieved your submission',
