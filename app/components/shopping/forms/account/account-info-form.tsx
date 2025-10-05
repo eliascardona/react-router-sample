@@ -24,9 +24,11 @@ export function AccountInfoForm() {
     <form
       onSubmit={(e) => {
         if (e.currentTarget) {
+          console.log('soy current one');          
           e.currentTarget.preventDefault();
           triggerAction(generateRequestBody(e.currentTarget), triggerOptions);
         }
+        console.log('soy anriguo');
         e.preventDefault();
         triggerAction(generateRequestBody(e.target), triggerOptions);
       }}>

@@ -4,7 +4,7 @@ export function GenericHeader() {
   return (
     <div className="w-full rounded-md shadow-md">
       <div className="flex justify-between p-4">
-        <h2 className="font-medium">Logotype</h2>
+        <h2 className="text-lg font-bold italic">Logotype</h2>
         <div className="flex">
           <Button type="button">Login</Button>
           <Button type="button" variant="outline">

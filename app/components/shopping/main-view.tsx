@@ -25,7 +25,7 @@ export function MainViewCheckoutPage({ actionData }: { actionData: any }) {
 
   return (
     <div className={'grid w-full'}>
-      <div className={'grid grid-cols-2 gap-2'}>
+      <div className={'grid w-[90%] justify-self-center grid-cols-2 gap-2'}>
         <ProductPriceSummary />
         <span className={'p-4'}>
           {activeTab === 1 ? (

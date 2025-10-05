@@ -6,9 +6,11 @@ export async function searchStripePriceByProductId(
   client: ApiClient
 ): Promise<PriceSearchResult> {
   try {
-    const response = await client.get<PriceSearchResult>(`/stripe/price`, {
-      productId,
-    });
+    const response = await client.get<PriceSearchResult>(
+      `/stripe/price/search`,
+      {},
+      { productId }
+    );
     return PriceSearchResultSchema.parse(response);
   } catch (error) {
     console.error('Error searching stripe price:', error);

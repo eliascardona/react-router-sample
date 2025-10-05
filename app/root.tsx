@@ -12,6 +12,7 @@ import type { Route } from './+types/root';
 import './app.css';
 import { authSessionMiddleware, validateTokenMiddleware } from './lib/api/auth';
 import { globalStorageMiddleware } from './lib/server/global-context';
+import { GenericHeader } from './components/layout/header/main-view';
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -48,6 +49,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <main>
+      <GenericHeader />
       <Outlet />
     </main>
   );
