@@ -1,7 +1,5 @@
 import { authenticatedServerClient } from '~/lib/api/client.server';
-import { setAuthSession } from '../api/auth';
 import type { GenericServerResponse } from '../api/types';
-import { performSignup } from '../auth/api';
 import { createPaymentIntent } from './api';
 import type { ShoppingRequestBody } from './types';
 
@@ -14,8 +12,8 @@ export async function shoppingServerActionHandler(
   try {
     switch (intent) {
       case 'SIGNUP': {
-        const serviceResponse = await performSignup(requestBody);
-        setAuthSession(serviceResponse);
+        // const serviceResponse = await performSignup(requestBody);
+        // setAuthSession(serviceResponse);
         return {
           success: true,
           message: 'The product has been successfully updated',

@@ -1,6 +1,6 @@
 import { useActionData } from 'react-router';
 import { MainViewCheckoutPage } from '~/components/shopping/main-view';
-import { authenticatedServerClient } from '~/lib/api/client.server';
+import { apiClient } from '~/lib/api/client';
 import { searchStripePriceByProductId } from '~/lib/shopping/api';
 import { shoppingServerActionHandler } from '~/lib/shopping/server';
 import { ShoppingRequestBodySchema } from '~/lib/shopping/types';
@@ -30,9 +30,11 @@ export async function action(args: Route.ActionArgs) {
 export async function loader(args: Route.LoaderArgs) {
   const { productId } = args.params;
 
+  console.log('\nproductId\n', productId);
+
   const priceSearchResult = await searchStripePriceByProductId(
     productId,
-    authenticatedServerClient
+    apiClient
   );
 
   return {
