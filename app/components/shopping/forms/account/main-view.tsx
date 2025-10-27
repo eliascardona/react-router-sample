@@ -1,14 +1,18 @@
-import { FormProvider, useForm } from 'react-hook-form';
+import { Button } from '~/components/ui/button';
 import { AccountInfoForm } from './account-info-form';
 
-export function AccountInfo() {
-  const form = useForm();
+export function AccountInfo({
+  onClick
+}: {
+  onClick: () => void;
+}) {
   return (
     <div className={'containerLy'}>
-      <FormProvider {...form}>
-        <AccountInfoForm />
-        {/* billing UI will Render intaed the signup form, once user has created */}
-      </FormProvider>
+      <Button type='button' onClick={onClick}>
+        iniciar PKCE
+      </Button>
+      {/* <AccountInfoForm /> */}
+      {/* billing UI will Render intaed the signup form, once user has created */}
     </div>
   );
 }
