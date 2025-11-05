@@ -22,6 +22,9 @@ export async function action(args: Route.ActionArgs) {
   if (!formData) throw new Error("You didn't send a request body");
 
   const requestBody = ShoppingRequestBodySchema.parse(formData);
+
+  console.log(requestBody);
+
   const transactionResult = await shoppingServerActionHandler(requestBody);
 
   return transactionResult;
@@ -29,8 +32,6 @@ export async function action(args: Route.ActionArgs) {
 
 export async function loader(args: Route.LoaderArgs) {
   const { productId } = args.params;
-
-  console.log('\nproductId\n', productId);
 
   const priceSearchResult = await searchStripePriceByProductId(
     productId,

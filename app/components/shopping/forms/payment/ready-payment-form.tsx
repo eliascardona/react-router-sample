@@ -18,21 +18,26 @@ export function ReadyPaymentForm() {
 
   async function initPaymentProcess() {
     try {
-      const r = await fetch('http://localhost:8082/api/stripe/intent/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          priceId: 'price123',
-          productId: 'prod123',
-          productName: 'product sample ',
-        }),
-      });
-      const j = await r.json();
-      const load = j.responsePayload;
-      console.log('create payment intent endpoint response', load);
-      setClientSecret(load.clientSecret);
+      const response = await fetch(
+        'http://localhost:8082/api/stripe/intent/create',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            priceId: 'price123',
+            productId: 'prod123',
+            productName: 'product sample ',
+          }),
+        }
+      );
+      const paymentIntentPayload = await response.json();
+      console.log(
+        'create payment intent endpoint response',
+        paymentIntentPayload
+      );
+      setClientSecret(paymentIntentPayload.clientSecret);
     } catch (err) {
       console.error('error on payment intent', err);
     }

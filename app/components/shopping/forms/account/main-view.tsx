@@ -1,10 +1,14 @@
+import { FormProvider, useForm } from 'react-hook-form';
 import { AccountInfoForm } from './account-info-form';
 
-export function AccountInfo({ setActiveTab }: { setActiveTab: () => void }) {
+export function AccountInfo() {
+  const form = useForm();
   return (
     <div className={'containerLy'}>
-      <AccountInfoForm setActiveTab={setActiveTab} />
-      {/* billing UI will Render intaed the signup form, once user has created */}
+      <FormProvider {...form}>
+        <AccountInfoForm />
+        {/* billing UI will Render intaed the signup form, once user has created */}
+      </FormProvider>
     </div>
   );
 }

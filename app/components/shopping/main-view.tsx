@@ -1,13 +1,19 @@
 import { useEffect, useState } from 'react';
+import type { GenericServerResponse } from '~/lib/api/types';
 import { ProductPriceSummary } from './(ui)/summary';
 import { AccountInfo } from './forms/account/main-view';
 import { ReadyPaymentForm } from './forms/payment/ready-payment-form';
 
-export function MainViewCheckoutPage({ actionData }: { actionData: any }) {
+export function MainViewCheckoutPage({
+  actionData,
+}: {
+  actionData: GenericServerResponse;
+}) {
   const [activeTab, setActiveTab] = useState(1);
 
   useEffect(() => {
-    if (actionData) {
+    if (actionData && actionData.success) {
+      setActiveTab(2);
     }
   }, [actionData]);
 
@@ -29,7 +35,7 @@ export function MainViewCheckoutPage({ actionData }: { actionData: any }) {
         <ProductPriceSummary />
         <span className={'p-4'}>
           {activeTab === 1 ? (
-            <AccountInfo setActiveTab={() => setActiveTab(activeTab + 1)} />
+            <AccountInfo />
           ) : activeTab === 2 ? (
             <ReadyPaymentForm />
           ) : (

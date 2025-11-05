@@ -4,15 +4,10 @@ import {
   type FormEncType,
   type HTMLFormMethod,
 } from 'react-router';
+import type { SubmissionOptions } from '../forms/submission/utils';
+import { ShoppingActionEnum, type SignupRequestBody } from '../shopping/types';
 
-export type SubmissionOptions = {
-  action?: string;
-  method?: HTMLFormMethod;
-  contentType?: string;
-  onError?: (error: unknown) => void;
-};
-
-export function useSubmitFromReactRouter({
+export function triggerSignUp({
   action,
   method = 'post',
   contentType = 'application/json',
@@ -29,8 +24,17 @@ export function useSubmitFromReactRouter({
     const submitAction = action;
     const submitContentType = contentType as FormEncType;
 
+    const signupRequestBody: SignupRequestBody = {
+      intent: ShoppingActionEnum.enum.SIGNUP,
+      body: {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      },
+    };
+
     try {
-      await submit(data, {
+      await submit(signupRequestBody, {
         method: submitMethod,
         action: submitAction,
         encType: submitContentType,

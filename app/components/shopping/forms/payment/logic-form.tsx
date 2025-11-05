@@ -10,9 +10,11 @@ export function StripeLogicForm() {
   const stripeClient = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState<string | null | undefined>(null);
+
   const location = useLocation();
+
   const pathnameArray = location.pathname;
-  let coursePathname = pathnameArray[2];
+  const coursePathname = pathnameArray.split('/')[1];
 
   const handleSubmit = async (evt: any) => {
     evt.preventDefault();
@@ -21,7 +23,7 @@ export function StripeLogicForm() {
     const confirmationResponse = await stripeClient.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${window.location.origin}/${coursePathname}/thanks`,
+        return_url: `${window.location.origin}/course/${coursePathname}/thanks`,
       },
     });
 

@@ -21,13 +21,17 @@ export const ShoppingActionEnum = z.enum([
 export type ShoppingAction = z.infer<typeof ShoppingActionEnum>;
 
 const SignupSchema = z.object({
-  name: z.string().uuid(),
+  username: z.string(),
   email: z.string().email(),
   password: z.string(),
 });
 
 const PaymentIntentSchema = z.object({
   priceId: z.string(),
+  productId: z.string(),
+  productName: z.string(),
+  customerId: z.string().nullish(),
+  customerName: z.string().nullish(),
 });
 
 /*

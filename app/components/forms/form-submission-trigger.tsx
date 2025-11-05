@@ -13,6 +13,7 @@ interface FormProps {
   showSubmitButton?: boolean;
   children?: React.ReactNode;
   onSubmit: (data: any) => void;
+  disabled: boolean;
 }
 
 export function FormTrigger({
@@ -24,6 +25,7 @@ export function FormTrigger({
   showSubmitButton = true,
   children,
   onSubmit,
+  disabled,
 }: FormProps) {
   const { handleSubmit } = useFormContext();
 
@@ -31,7 +33,7 @@ export function FormTrigger({
     <div className={cn('w-full', containerClassName)}>
       <form onSubmit={handleSubmit(onSubmit)} id={formId} className={className}>
         <div className="grid gap-4">
-          <fieldset className="grid gap-4">
+          <fieldset className="grid gap-4" disabled={disabled}>
             {children}
             {fieldArray
               .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
@@ -43,8 +45,8 @@ export function FormTrigger({
           </fieldset>
 
           {showSubmitButton && (
-            <Button type="submit" form={formId}>
-              {false ? 'Submitting...' : submitLabel}
+            <Button type="submit" disabled={disabled} form={formId}>
+              {disabled ? 'Submitting...' : submitLabel}
             </Button>
           )}
         </div>

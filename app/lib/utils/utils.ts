@@ -25,5 +25,5 @@ export function useServerActionTrigger() {
 export const getProductIdFromPathname = () => {
   const location = useLocation();
   const pathnameArray = location.pathname;
-  return pathnameArray[2];
+  return pathnameArray.split('/')[2];
 };
