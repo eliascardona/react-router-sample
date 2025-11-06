@@ -23,6 +23,8 @@ export function ReadyPaymentForm() {
   });
 
   useEffect(() => {
+    console.log('chargeInfo via context is ', chargeInfo);
+
     submitForm({
       priceId: chargeInfo?.priceId || 'price123',
       productId: chargeInfo?.productId || 'prod123',
@@ -30,7 +32,7 @@ export function ReadyPaymentForm() {
   }, []);
 
   useEffect(() => {
-    if (actionData) {
+    if (actionData && actionData.success) {
       const payload = actionData.data as {
         clientSecret: string;
         paymentIntentId: string;
@@ -69,6 +71,7 @@ export function ReadyPaymentForm() {
             clientSecret,
             appearance,
           }}>
+          <p>pagar ahora</p>
           <StripeLogicForm />
         </Elements>
       )}

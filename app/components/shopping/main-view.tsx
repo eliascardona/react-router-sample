@@ -8,7 +8,7 @@ import { ReadyPaymentForm } from './forms/payment/ready-payment-form';
 export function MainViewCheckoutPage({
   actionData,
 }: {
-  actionData: GenericServerResponse;
+  actionData: GenericServerResponse<any>;
 }) {
   const [activeTab, setActiveTab] = useState(1);
 

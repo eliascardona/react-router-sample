@@ -5,9 +5,9 @@ import type { ChargeInfoDto } from '~/lib/shopping/types';
 import type { loader } from '~/routes/course.$productId.checkout';
 import { FormattedAmount } from './formatted-amount';
 
-const splitPrice = (chargeInfoTemp: ChargeInfoDto) => {
-  let realUnitAmount = chargeInfoTemp.unitAmount / 100;
-  let initialUnitAmount = (chargeInfoTemp.unitAmount / 100) * 0.84;
+const splitPrice = (chargeInfo: ChargeInfoDto) => {
+  let realUnitAmount = chargeInfo.unitAmount / 100;
+  let initialUnitAmount = (chargeInfo.unitAmount / 100) * 0.84;
   let tax = initialUnitAmount * 0.16;
   let taxFmt = tax.toPrecision(2);
 
@@ -30,6 +30,8 @@ export function ProductPriceSummary() {
 
   useEffect(() => {
     if (chargeInfo) {
+      console.log('chargeInfo in frontend component is ', chargeInfo);
+
       setChargeInfo(chargeInfo);
     }
   }, [chargeInfo]);

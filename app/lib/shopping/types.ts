@@ -7,7 +7,7 @@ export const ChargeInfoDtoSchema = z.object({
   productId: z.string(),
   productName: z.string(),
   priceId: z.string(),
-  isActive: z.boolean(),
+  active: z.boolean(),
   unitAmount: z.number(),
   currency: z.string(),
 });

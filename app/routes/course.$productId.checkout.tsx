@@ -40,6 +40,8 @@ export async function loader(args: Route.LoaderArgs) {
     apiClient
   );
 
+  console.log('priceSearchResult in route loader is ', priceSearchResult);
+
   return {
     chargeInfo: priceSearchResult,
   };

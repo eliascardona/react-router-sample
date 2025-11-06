@@ -1,5 +1,5 @@
 import type { ApiClient } from '../api/client';
-import { ChargeInfoDtoSchema, type ChargeInfoDto } from './types';
+import { type ChargeInfoDto } from './types';
 
 export async function searchStripePriceByProductId(
   productId: string,
@@ -11,7 +11,9 @@ export async function searchStripePriceByProductId(
       {},
       { productId }
     );
-    return ChargeInfoDtoSchema.parse(response);
+    console.log(response);
+
+    return response;
   } catch (error) {
     console.error('Error searching stripe price:', error);
     throw error;
