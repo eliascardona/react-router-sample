@@ -25,7 +25,9 @@ export async function action(args: Route.ActionArgs) {
 
   console.log(requestBody);
 
-  const transactionResult = await shoppingServerActionHandler(requestBody);
+  const transactionResult = await shoppingServerActionHandler<any, any>(
+    requestBody
+  );
 
   return transactionResult;
 }

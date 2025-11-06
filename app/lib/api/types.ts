@@ -9,10 +9,11 @@ export const errorResponseSchema = z.object({
   timestamp: z.string(),
 });
 
-export type GenericServerResponse =
+export type GenericServerResponse<T> =
   | {
       success: boolean;
       message: string;
+      data?: T | null;
     }
   | null
   | undefined;

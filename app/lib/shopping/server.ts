@@ -5,9 +5,9 @@ import { performSignup } from '../auth/api';
 import { createPaymentIntent } from './api';
 import type { ShoppingRequestBody } from './types';
 
-export async function shoppingServerActionHandler(
+export async function shoppingServerActionHandler<T, K>(
   requestBody: ShoppingRequestBody
-): Promise<GenericServerResponse> {
+): Promise<GenericServerResponse<T>> {
   const intent = requestBody.intent;
   if (!requestBody) return null;
 
@@ -26,7 +26,6 @@ export async function shoppingServerActionHandler(
         const serviceResponse = await createPaymentIntent(
           requestBody.body.priceId,
           requestBody.body.productId,
-          requestBody.body.productName,
           authenticatedServerClient
         );
         return serviceResponse;

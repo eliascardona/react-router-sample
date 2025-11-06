@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { GenericServerResponse } from '~/lib/api/types';
+import { ShoppingContextProvider } from '~/lib/shopping/context';
 import { ProductPriceSummary } from './(ui)/summary';
 import { AccountInfo } from './forms/account/main-view';
 import { ReadyPaymentForm } from './forms/payment/ready-payment-form';
@@ -30,19 +31,21 @@ export function MainViewCheckoutPage({
    **/
 
   return (
-    <div className={'grid w-full'}>
-      <div className={'grid w-[90%] grid-cols-2 gap-2 justify-self-center'}>
-        <ProductPriceSummary />
-        <span className={'p-4'}>
-          {activeTab === 1 ? (
-            <AccountInfo />
-          ) : activeTab === 2 ? (
-            <ReadyPaymentForm />
-          ) : (
-            <span>no tab</span>
-          )}
-        </span>
+    <ShoppingContextProvider>
+      <div className={'grid w-full'}>
+        <div className={'grid w-[90%] grid-cols-2 gap-2 justify-self-center'}>
+          <ProductPriceSummary />
+          <span className={'p-4'}>
+            {activeTab === 1 ? (
+              <AccountInfo />
+            ) : activeTab === 2 ? (
+              <ReadyPaymentForm />
+            ) : (
+              <span>no tab</span>
+            )}
+          </span>
+        </div>
       </div>
-    </div>
+    </ShoppingContextProvider>
   );
 }

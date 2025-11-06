@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
 import { useLoaderData } from 'react-router';
-import type { PriceSearchResult } from '~/lib/shopping/types';
+import { useShoppingContext } from '~/lib/shopping/context';
+import type { ChargeInfoDto } from '~/lib/shopping/types';
 import type { loader } from '~/routes/course.$productId.checkout';
 import { FormattedAmount } from './formatted-amount';
 
-const splitPrice = (chargeInfoTemp: PriceSearchResult) => {
+const splitPrice = (chargeInfoTemp: ChargeInfoDto) => {
   let realUnitAmount = chargeInfoTemp.unitAmount / 100;
   let initialUnitAmount = (chargeInfoTemp.unitAmount / 100) * 0.84;
   let tax = initialUnitAmount * 0.16;
@@ -23,7 +25,14 @@ const splitPrice = (chargeInfoTemp: PriceSearchResult) => {
 
 export function ProductPriceSummary() {
   const { chargeInfo } = useLoaderData<typeof loader>();
+  const { setChargeInfo } = useShoppingContext();
   const priceFields = splitPrice(chargeInfo);
+
+  useEffect(() => {
+    if (chargeInfo) {
+      setChargeInfo(chargeInfo);
+    }
+  }, [chargeInfo]);
 
   return (
     <div className={'grid w-[88%] gap-2'}>

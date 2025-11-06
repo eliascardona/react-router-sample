@@ -1,10 +1,5 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
-
-type ChargeInfo = {
-  priceId: string;
-  unitAmount: number;
-  currency: string;
-};
+import type { ChargeInfoDto as ChargeInfo } from './types';
 
 type CustomerInfo = {
   customerId: string;

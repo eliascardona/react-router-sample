@@ -1,63 +1,45 @@
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import { useState } from 'react';
-// import { useShoppingContext } from '~/lib/shopping/context';
-import { Button } from '~/components/ui/button';
+import { useEffect, useState } from 'react';
+import { useActionData } from 'react-router';
+import { useShoppingContext } from '~/lib/shopping/context';
+import { triggerPaymentIntentCreation } from '~/lib/shopping/utils';
+import { getProductIdFromPathname } from '~/lib/utils/utils';
+import type { action } from '~/routes/course.$productId.checkout';
 import { StripeLogicForm } from './logic-form';
 const stripePromise = loadStripe(
   'pk_test_51HcCgTEb4AhOvqGQtNkDDt9pLoIjJEBpbmmRJZgIz0y3vdcrJDAYDP5DndpSrROfCs5jG7c0VKDNhjgDv5Au2Csv00ihRhpqpm'
 );
 
 export function ReadyPaymentForm() {
+  const productId = getProductIdFromPathname();
   const [clientSecret, setClientSecret] = useState<string | null>(null);
-  // const { chargeInfo, customerInfo } = useShoppingContext();
-  const paymentReference = {
-    priceRefer: 'chargeInfo?.priceId',
-    customerRefer: 'customerInfo?.customerId',
-  };
+  const { chargeInfo } = useShoppingContext();
+  const actionData = useActionData<typeof action>();
+  const { submitForm, isSubmitting } = triggerPaymentIntentCreation({
+    method: 'POST' as const,
+    action: `/course/${productId}/checkout`,
+    contentType: 'application/json',
+  });
 
-  async function initPaymentProcess() {
-    try {
-      const response = await fetch(
-        'http://localhost:8082/api/stripe/intent/create',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            priceId: 'price123',
-            productId: 'prod123',
-            productName: 'product sample ',
-          }),
-        }
-      );
-      const paymentIntentPayload = await response.json();
-      console.log(
-        'create payment intent endpoint response',
-        paymentIntentPayload
-      );
-      setClientSecret(paymentIntentPayload.clientSecret);
-    } catch (err) {
-      console.error('error on payment intent', err);
+  useEffect(() => {
+    submitForm({
+      priceId: chargeInfo?.priceId || 'price123',
+      productId: chargeInfo?.productId || 'prod123',
+    });
+  }, []);
+
+  useEffect(() => {
+    if (actionData) {
+      const payload = actionData.data as {
+        clientSecret: string;
+        paymentIntentId: string;
+      };
+
+      console.log('create payment intent endpoint response', payload);
+      setClientSecret(payload?.clientSecret);
     }
-  }
-
-  // useEffect(() => {
-  //   if (
-  //     paymentReference.priceRefer!.includes('price') &&
-  //     paymentReference.customerRefer!.includes('cus')
-  //   ) {
-  //     localStorage.setItem('localPriceId', "chargeInfo?.priceId");
-  //     localStorage.setItem(
-  //       'localCustomerId',
-  //       "customerInfo?.customerId"
-  //     );
-  //     initPaymentProcess();
-  //   } else {
-  //     console.log('MUST TO PARSE THE PRICE ID AND CUSTOMER ID');
-  //   }
-  // }, [paymentReference]);
+  }, [actionData]);
 
   /*  stripe payment element custom styling  */
   const appearance = {
@@ -80,9 +62,6 @@ export function ReadyPaymentForm() {
 
   return (
     <>
-      <Button type="button" onClick={initPaymentProcess}>
-        iniciar pago
-      </Button>
       {clientSecret && (
         <Elements
           stripe={stripePromise}

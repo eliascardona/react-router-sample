@@ -3,12 +3,15 @@ import { z } from 'zod';
 /*
   API RESPONSES
 */
-export const PriceSearchResultSchema = z.object({
-  id: z.string(),
+export const ChargeInfoDtoSchema = z.object({
+  productId: z.string(),
+  productName: z.string(),
+  priceId: z.string(),
+  isActive: z.boolean(),
   unitAmount: z.number(),
   currency: z.string(),
 });
-export type PriceSearchResult = z.infer<typeof PriceSearchResultSchema>;
+export type ChargeInfoDto = z.infer<typeof ChargeInfoDtoSchema>;
 
 /*
   SCHEMAS AND TYPES FOR ACTIONS
@@ -29,9 +32,6 @@ const SignupSchema = z.object({
 const PaymentIntentSchema = z.object({
   priceId: z.string(),
   productId: z.string(),
-  productName: z.string(),
-  customerId: z.string().nullish(),
-  customerName: z.string().nullish(),
 });
 
 /*
