@@ -2,36 +2,30 @@ import { useEffect } from 'react';
 import { useLoaderData } from 'react-router';
 import { useShoppingContext } from '~/lib/shopping/context';
 import type { ChargeInfoDto } from '~/lib/shopping/types';
+import { splitPrice } from '~/lib/shopping/utils';
 import type { loader } from '~/routes/course.$productId.checkout';
 import { FormattedAmount } from './formatted-amount';
 
-const splitPrice = (chargeInfo: ChargeInfoDto) => {
-  let realUnitAmount = chargeInfo.unitAmount / 100;
-  let initialUnitAmount = (chargeInfo.unitAmount / 100) * 0.84;
-  let tax = initialUnitAmount * 0.16;
-  let taxFmt = tax.toPrecision(2);
-
-  let parsedAmount = initialUnitAmount.toString();
-  let finalAmount = realUnitAmount.toString();
-
-  const priceFmt = {
-    parsedAmount: parsedAmount,
-    finalAmount: finalAmount,
-    taxFmt: taxFmt,
-  };
-
-  return priceFmt;
-};
-
 export function ProductPriceSummary() {
   const { chargeInfo } = useLoaderData<typeof loader>();
+
+  if (!chargeInfo) {
+    return <>loading pricing information...</>;
+  }
+
+  return <ProductPriceSummaryContents chargeInfo={chargeInfo} />;
+}
+
+function ProductPriceSummaryContents({
+  chargeInfo,
+}: {
+  chargeInfo: ChargeInfoDto;
+}) {
   const { setChargeInfo } = useShoppingContext();
   const priceFields = splitPrice(chargeInfo);
 
   useEffect(() => {
     if (chargeInfo) {
-      console.log('chargeInfo in frontend component is ', chargeInfo);
-
       setChargeInfo(chargeInfo);
     }
   }, [chargeInfo]);

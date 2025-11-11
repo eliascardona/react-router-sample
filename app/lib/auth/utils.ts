@@ -18,7 +18,7 @@ export function triggerSignUp({
 
   const submitForm = async (formValues: any) => {
     const data = { ...formValues };
-    console.log('form data by RHF', data);
+    console.log('SignUp data submitted to backend is ', data);
 
     const submitMethod = method as HTMLFormMethod;
     const submitAction = action;

@@ -1,7 +1,7 @@
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { useEffect, useState } from 'react';
-import { useActionData } from 'react-router';
+import { useActionData, useSubmit } from 'react-router';
 import { useShoppingContext } from '~/lib/shopping/context';
 import { triggerPaymentIntentCreation } from '~/lib/shopping/utils';
 import { getProductIdFromPathname } from '~/lib/utils/utils';
@@ -12,24 +12,36 @@ const stripePromise = loadStripe(
 );
 
 export function ReadyPaymentForm() {
-  const productId = getProductIdFromPathname();
+  const productIdFromPathname = getProductIdFromPathname();
   const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [hasRequestedIntent, setHasRequestedIntent] = useState(false);
   const { chargeInfo } = useShoppingContext();
+  const priceId = chargeInfo?.priceId;
+  const productId = chargeInfo?.productId;
+  const submit = useSubmit();
+
   const actionData = useActionData<typeof action>();
-  const { submitForm, isSubmitting } = triggerPaymentIntentCreation({
-    method: 'POST' as const,
-    action: `/course/${productId}/checkout`,
-    contentType: 'application/json',
-  });
 
   useEffect(() => {
-    console.log('chargeInfo via context is ', chargeInfo);
-
-    submitForm({
-      priceId: chargeInfo?.priceId || 'price123',
-      productId: chargeInfo?.productId || 'prod123',
+    const { submitForm } = triggerPaymentIntentCreation({
+      method: 'POST' as const,
+      action: `/course/${productIdFromPathname}/checkout`,
+      contentType: 'application/json',
+      submit,
     });
-  }, []);
+
+    if (priceId && productId) {
+      if (!hasRequestedIntent) {
+        console.log("we're going to generate payment intent for: ", priceId);
+
+        submitForm({
+          priceId: priceId || 'price123',
+          productId: productId || 'prod123',
+        });
+        setHasRequestedIntent(true);
+      }
+    }
+  }, [priceId, productId]);
 
   useEffect(() => {
     if (actionData && actionData.success) {
@@ -41,6 +53,7 @@ export function ReadyPaymentForm() {
       console.log('create payment intent endpoint response', payload);
       setClientSecret(payload?.clientSecret);
     }
+    return;
   }, [actionData]);
 
   /*  stripe payment element custom styling  */
@@ -71,7 +84,6 @@ export function ReadyPaymentForm() {
             clientSecret,
             appearance,
           }}>
-          <p>pagar ahora</p>
           <StripeLogicForm />
         </Elements>
       )}

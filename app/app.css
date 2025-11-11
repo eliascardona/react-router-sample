@@ -353,3 +353,337 @@ input[type='number'] {
 .blue {
   color: rgb(15, 99, 196);
 }
+
+/* STYLES FOR LEGACY LANDING PAGE */
+
+.introSection {
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  color: #fefefe;
+  background-color: #181818;
+}
+
+.videoCtn {
+  width: 60%;
+  display: grid;
+  justify-self: center;
+  justify-items: center;
+}
+
+.spanFrame {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  overflow: hidden;
+}
+
+.spanFrame iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  border-style: none;
+  border-radius: 1em;
+}
+
+.centerSectionWithImage {
+  width: 90%;
+  display: grid;
+  justify-self: center;
+  justify-items: center;
+  text-align: center;
+}
+
+.highlighted {
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.semiHl {
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.green {
+  color: rgb(30, 240, 50);
+}
+
+.gray {
+  font-size: inherit;
+  font-weight: inherit;
+  color: #808080;
+}
+
+.megaTitleBlue {
+  font-size: 64;
+  color: #fefefe;
+  background-color: rgb(30, 240, 50);
+  padding: 10px 20px 10px 20px;
+  border-radius: 10px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.megaTitleBlack {
+  font-size: 64;
+  color: #fefefe;
+  background-color: #0a0a0a;
+  padding: 10px 20px 10px 20px;
+  border-radius: 10px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.sampleImageOne {
+  width: 50%;
+  justify-self: center;
+}
+
+.instructorImg {
+  width: 80%;
+  justify-self: center;
+}
+
+.cover {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.cover .img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.circle {
+  border-radius: 50%;
+}
+
+.sellBtn {
+  width: 240px;
+  display: block;
+  padding: 0.75rem 1.5rem;
+  margin: 1.375rem;
+  border-style: none;
+  border-radius: 1em;
+  color: #eee;
+  background-color: rgb(30, 240, 50);
+  font-family: inherit;
+  text-align: center;
+  text-decoration: none;
+}
+
+.sellBtn span {
+  display: inline;
+  margin: 4px 0;
+  font-size: 1.45em;
+  font-weight: 600;
+}
+
+.sellBtn ion-icon {
+  font-size: 24px;
+  line-height: normal;
+  vertical-align: baseline;
+}
+
+.centeredGrid {
+  width: 98%;
+  display: grid;
+  justify-self: center;
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.instructorTitle {
+  width: 90%;
+  justify-self: center;
+  text-align: center;
+}
+
+.col6 {
+  width: 96%;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  justify-self: center;
+  column-gap: 1rem;
+}
+
+.el {
+  width: 98%;
+  display: grid;
+  place-items: center;
+  justify-self: center;
+}
+
+.underlineCol {
+  padding: 0 2rem;
+  border: 6px dashed #181818;
+  color: #0a0a0a;
+  background-color: #fefefe;
+}
+
+.faq {
+  width: 100%;
+  display: grid;
+  padding: 3rem 0;
+  color: #fefefe;
+  background-color: #0a0a0a;
+}
+
+.faqTitle {
+  display: inline;
+  margin-inline-start: 0.3em;
+  margin-inline-end: 0.3em;
+  line-height: normal;
+  vertical-align: bottom;
+}
+
+.faqTitleAux {
+  display: inline;
+  margin-inline-start: 0.3em;
+  margin-inline-end: 0.3em;
+  line-height: normal;
+  visibility: hidden;
+}
+
+.faqLegend {
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+}
+
+.faq .container {
+  width: 90%;
+  display: grid;
+  justify-self: center;
+}
+
+.questionPanelsPadding {
+  padding-left: 1.5rem;
+}
+
+.iconsBox {
+  width: 94%;
+  display: grid;
+  grid-template-columns: 22% 78%;
+  grid-template-rows: repeat(5, 20%);
+  justify-self: center;
+  padding-bottom: 2rem;
+  border-top: 1px solid rgb(30, 240, 50);
+  border-bottom: 1px solid rgb(30, 240, 50);
+  border-radius: 7px;
+  color: #fefefe;
+  background-color: #0a0a0a;
+}
+
+.iconBoxElem {
+  width: 98%;
+  display: grid;
+  place-items: center;
+  justify-self: center;
+}
+
+.darkTitleSection {
+  width: 94%;
+  display: grid;
+  justify-self: center;
+  padding: 0 1.5rem;
+  color: #fff;
+  background-color: #000;
+}
+
+.ctaSection {
+  width: 100%;
+  display: grid;
+  padding: 120px 0 180px 0;
+  color: #fefefe;
+  background-color: #0a0a0a;
+}
+
+.ctaChildLy {
+  width: 50%;
+  display: grid;
+  justify-self: center;
+  place-items: center;
+  text-align: center;
+}
+
+@media (min-width: 249px) and (max-width: 679px) {
+  .col-6 {
+    grid-template-columns: 100%;
+  }
+
+  .underline-col {
+    grid-template-columns: 100%;
+  }
+
+  .sellBtn {
+    width: 140px;
+    margin: 1rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .sellBtn span {
+    font-size: 1.15em;
+    font-weight: 600;
+  }
+
+  .sellBtn ion-icon {
+    font-size: 20px;
+  }
+
+  .iconsBox .iconBoxElem:nth-child(-n + 1) {
+    display: none;
+  }
+
+  .iconsBox .iconBoxElem:nth-child(-n + 2) {
+    text-align: center;
+  }
+
+  .iconsBox {
+    width: 80%;
+    grid-template-columns: 100%;
+    grid-template-rows: revert;
+    justify-self: center;
+    justify-items: center;
+  }
+
+  .iconsBox > div {
+    width: 85%;
+    display: grid;
+    justify-self: center;
+    padding: 0;
+  }
+}
+
+@media (max-width: 749px) {
+  .videoCtn {
+    width: 90%;
+  }
+
+  .sampleImageOne {
+    width: 45%;
+  }
+
+  .instructorImg {
+    width: 50%;
+  }
+
+  .col6 {
+    width: 90%;
+    grid-template-columns: 100%;
+    justify-self: center;
+    justify-items: center;
+    padding: 0.5rem 0;
+  }
+
+  .instructorImg img {
+    border-radius: 1rem;
+    border-bottom-left-radius: 3rem;
+  }
+}

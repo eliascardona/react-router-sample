@@ -3,6 +3,8 @@ import { z } from 'zod';
 /*
   API RESPONSES
 */
+
+/* Charge information retrieval */
 export const ChargeInfoDtoSchema = z.object({
   productId: z.string(),
   productName: z.string(),
@@ -12,6 +14,15 @@ export const ChargeInfoDtoSchema = z.object({
   currency: z.string(),
 });
 export type ChargeInfoDto = z.infer<typeof ChargeInfoDtoSchema>;
+
+/* Payment intent creation response */
+export const PaymentIntentResponseDtoSchema = z.object({
+  clientSecret: z.string(),
+  paymentIntentId: z.string(),
+});
+export type PaymentIntentResponseDto = z.infer<
+  typeof PaymentIntentResponseDtoSchema
+>;
 
 /*
   SCHEMAS AND TYPES FOR ACTIONS

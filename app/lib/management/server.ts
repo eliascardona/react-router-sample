@@ -5,7 +5,7 @@ import type { ProductManagementRequestBody } from './types';
 
 export async function productManagementActionHandler(
   requestBody: ProductManagementRequestBody
-): Promise<GenericServerResponse> {
+): Promise<GenericServerResponse<any>> {
   const intent = requestBody.intent;
   if (!requestBody) return null;
 

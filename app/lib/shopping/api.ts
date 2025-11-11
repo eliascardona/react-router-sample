@@ -1,5 +1,9 @@
 import type { ApiClient } from '../api/client';
-import { type ChargeInfoDto } from './types';
+import {
+  ChargeInfoDtoSchema,
+  type ChargeInfoDto,
+  type PaymentIntentResponseDto,
+} from './types';
 
 export async function searchStripePriceByProductId(
   productId: string,
@@ -11,9 +15,8 @@ export async function searchStripePriceByProductId(
       {},
       { productId }
     );
-    console.log(response);
 
-    return response;
+    return ChargeInfoDtoSchema.parse(response);
   } catch (error) {
     console.error('Error searching stripe price:', error);
     throw error;
@@ -24,12 +27,17 @@ export async function createPaymentIntent(
   priceId: string,
   productId: string,
   client: ApiClient
-): Promise<any> {
+): Promise<PaymentIntentResponseDto> {
   try {
-    const response = await client.post<any>(`/stripe/intent/create`, {
-      priceId,
-      productId,
-    });
+    const response = await client.post<PaymentIntentResponseDto>(
+      `/stripe/intent/create`,
+      {
+        priceId,
+        productId,
+      }
+    );
+    console.log('\n----------- PAYMENT INTENT RESPONSE IS \n', response);
+
     return response;
   } catch (error) {
     console.error('Error creating payment intent:', error);

@@ -58,7 +58,7 @@ export async function updateProduct(
 export async function deleteProduct(
   requestBody: ProductDeletionRequestBody,
   client: ApiClient
-): Promise<GenericServerResponse> {
+): Promise<GenericServerResponse<any>> {
   try {
     const productId = requestBody.body.productId;
 

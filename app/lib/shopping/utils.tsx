@@ -1,28 +1,39 @@
-import {
-  useNavigation,
-  useSubmit,
-  type FormEncType,
-  type HTMLFormMethod,
-} from 'react-router';
+import { type FormEncType, type HTMLFormMethod } from 'react-router';
 import { toast } from 'sonner';
 import type { SubmissionOptions } from '../forms/submission/utils';
 import {
   ShoppingActionEnum,
+  type ChargeInfoDto,
   type PaymentIntentRequestBody,
 } from '../shopping/types';
+
+export const splitPrice = (chargeInfo: ChargeInfoDto) => {
+  let realUnitAmount = chargeInfo.unitAmount / 100;
+  let initialUnitAmount = (chargeInfo.unitAmount / 100) * 0.84;
+  let tax = initialUnitAmount * 0.16;
+  let taxFmt = tax.toPrecision(2);
+
+  let parsedAmount = initialUnitAmount.toString();
+  let finalAmount = realUnitAmount.toString();
+
+  const priceFmt = {
+    parsedAmount: parsedAmount,
+    finalAmount: finalAmount,
+    taxFmt: taxFmt,
+  };
+
+  return priceFmt;
+};
 
 export function triggerPaymentIntentCreation({
   action,
   method = 'post',
   contentType = 'application/json',
   onError,
+  submit,
 }: SubmissionOptions) {
-  const submit = useSubmit();
-  const navigation = useNavigation();
-
   const submitForm = async (formValues: any) => {
     const data = { ...formValues };
-    console.log('form data by RHF', data);
 
     const submitMethod = method as HTMLFormMethod;
     const submitAction = action;
@@ -37,11 +48,13 @@ export function triggerPaymentIntentCreation({
     };
 
     try {
-      await submit(paymentIntentRequestBody, {
-        method: submitMethod,
-        action: submitAction,
-        encType: submitContentType,
-      });
+      if (submit) {
+        await submit(paymentIntentRequestBody, {
+          method: submitMethod,
+          action: submitAction,
+          encType: submitContentType,
+        });
+      }
     } catch (error: any) {
       onError?.(error.message);
       throw new Error(error.message);
@@ -49,7 +62,6 @@ export function triggerPaymentIntentCreation({
   };
 
   return {
-    isSubmitting: navigation.state === 'submitting',
     submitForm,
   };
 }

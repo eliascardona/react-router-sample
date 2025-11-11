@@ -1,4 +1,4 @@
-import { useActionData } from 'react-router';
+import { data, useActionData } from 'react-router';
 import { MainViewLogin } from '~/components/auth/login/main-view';
 import { setAuthSession } from '~/lib/api/auth';
 import { performLogin } from '~/lib/auth/api';
@@ -22,14 +22,16 @@ export async function action(args: Route.ActionArgs) {
   const result = await performLogin(formData);
 
   if (result) {
-    console.log(result);
-
     setAuthSession(result);
-    return {
+    return data({
+      success: true,
       message: 'Thanks, we have recieved your submission',
-    };
+    });
   }
-  return { message: 'We got an internal error' };
+  return data({
+    success: false,
+    message: 'We got an internal error',
+  });
 }
 
 export default function LoginRoute() {

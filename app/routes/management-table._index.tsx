@@ -37,7 +37,6 @@ export async function loader(args: Route.LoaderArgs) {
     params,
     authenticatedServerClient
   );
-  console.log(response);
 
   return {
     dataPage: response || generateBlankPage(),

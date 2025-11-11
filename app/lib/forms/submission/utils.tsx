@@ -3,6 +3,8 @@ import {
   useSubmit,
   type FormEncType,
   type HTMLFormMethod,
+  type SubmitOptions,
+  type SubmitTarget,
 } from 'react-router';
 
 export type SubmissionOptions = {
@@ -10,6 +12,7 @@ export type SubmissionOptions = {
   method?: HTMLFormMethod;
   contentType?: string;
   onError?: (error: unknown) => void;
+  submit?: (target: SubmitTarget, options?: SubmitOptions) => Promise<void>;
 };
 
 export function useSubmitFromReactRouter({
@@ -23,7 +26,6 @@ export function useSubmitFromReactRouter({
 
   const submitForm = async (formValues: any) => {
     const data = { ...formValues };
-    console.log('form data by RHF', data);
 
     const submitMethod = method as HTMLFormMethod;
     const submitAction = action;
