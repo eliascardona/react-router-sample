@@ -5,6 +5,18 @@ import {
   type PaymentIntentResponseDto,
 } from './types';
 
+/**
+ * @TODO
+ * Add the triggers for the following endpoints:
+ *      /api/checkout-session
+ *                /create
+ *                /append-item
+ *                /lock
+ * 
+ *      /api/orders
+ *                /create
+ */
+
 export async function searchStripePriceByProductId(
   productId: string,
   client: ApiClient
