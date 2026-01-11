@@ -5,11 +5,11 @@ import {
 } from 'react-hook-form';
 import z from 'zod';
 import { Input } from '~/components/ui/input';
-import type { FieldConfig } from '~/lib/forms/retrieving/types';
 import { getHtmlFieldType } from '~/lib/forms/retrieving/utils';
 import { cn } from '~/lib/utils';
 import { GenericFieldError } from './ui/generic-field-error';
 import { GenericLabel } from './ui/generic-label';
+import type { FieldConfig } from '../proposal/schema';
 
 function generateZodSchema() {
   return z.string().min(2);

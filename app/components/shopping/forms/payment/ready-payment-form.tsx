@@ -30,8 +30,8 @@ export function ReadyPaymentForm() {
       submit,
     });
 
-    if (priceId && productId) {
-      if (!hasRequestedIntent) {
+    if (!hasRequestedIntent) {
+      if (priceId && productId) {
         console.log("we're going to generate payment intent for: ", priceId);
 
         submitForm({
@@ -41,7 +41,7 @@ export function ReadyPaymentForm() {
         setHasRequestedIntent(true);
       }
     }
-  }, [priceId, productId]);
+  }, [hasRequestedIntent, priceId, productId]);
 
   useEffect(() => {
     if (actionData && actionData.success) {
