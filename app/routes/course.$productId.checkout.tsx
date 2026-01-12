@@ -5,6 +5,9 @@ import { searchStripePriceByProductId } from '~/lib/shopping/api';
 import { shoppingServerActionHandler } from '~/lib/shopping/server';
 import { ShoppingRequestBodySchema } from '~/lib/shopping/types';
 import type { Route } from './+types/course.$productId.checkout';
+import { getUserFromAuthSession } from '~/lib/api/auth';
+import { ShoppingContextProvider } from '~/lib/shopping/context';
+import { ELIASCARDONA_USER_ID } from '~/lib/TESTING_MOCKS';
 
 export function meta(args: Route.MetaArgs) {
   return [
@@ -30,6 +33,7 @@ export async function action(args: Route.ActionArgs) {
 
 export async function loader(args: Route.LoaderArgs) {
   const { productId } = args.params;
+  const user = getUserFromAuthSession();
 
   const priceSearchResult = await searchStripePriceByProductId(
     productId,
@@ -38,11 +42,16 @@ export async function loader(args: Route.LoaderArgs) {
 
   return data({
     chargeInfo: priceSearchResult,
+    userId: ELIASCARDONA_USER_ID
   });
 }
 
 export default function CheckoutPage() {
   const actionData = useActionData<typeof action>();
 
-  return <MainViewCheckoutPage actionData={actionData} />;
+  return (
+    <ShoppingContextProvider>
+      <MainViewCheckoutPage actionData={actionData} />
+    </ShoppingContextProvider>
+  );
 }

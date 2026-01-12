@@ -13,10 +13,16 @@ const formFields: FieldConfig[] = [
     order: 1,
   },
   {
+    name: 'email',
+    label: 'Enter you email',
+    type: FieldTypeEnum.enum.text,
+    order: 2,
+  },
+  {
     name: 'password',
     label: 'Enter you password',
     type: FieldTypeEnum.enum.pass,
-    order: 1,
+    order: 3,
   },
 ];
 

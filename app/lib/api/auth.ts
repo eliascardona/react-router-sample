@@ -42,6 +42,15 @@ export const setAuthSession = async (response: AuthResponse) => {
   });
 };
 
+export const getUserFromAuthSession = () => {
+  const authSession = getAuthSession();
+  console.log(JSON.stringify({ user: authSession.data }));
+
+  const user = authSession.get('user') as Record<string, any>;
+
+  return user;
+}
+
 export const clearAuthSession = (
   authSession: ReturnType<typeof getAuthSessionFromContext>
 ) => {

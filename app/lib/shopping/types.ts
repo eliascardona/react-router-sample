@@ -1,10 +1,17 @@
 import { z } from 'zod';
+import { checkoutSessionId, priceId, productId, tenantId, userId } from '../shared/types';
 
 /*
   API RESPONSES
 */
 
-/* Charge information retrieval */
+/* Checkout session retrieval schema */
+export const CheckoutSessionResponseDtoSchema = z.object({
+  id: z.string(),
+});
+export type CheckoutSessionResponseDto = z.infer<typeof CheckoutSessionResponseDtoSchema>;
+
+/* Charge information retrieval schema */
 export const ChargeInfoDtoSchema = z.object({
   productId: z.string(),
   productName: z.string(),
@@ -31,6 +38,8 @@ export const ShoppingActionEnum = z.enum([
   'SIGNUP',
   'PAYMENT_INTENT',
   'PAYMENT_CONFIRMATION',
+  'CREATE_CHECKOUT_SESSION',
+  'CREATE_ORDER',
 ]);
 export type ShoppingAction = z.infer<typeof ShoppingActionEnum>;
 
@@ -41,9 +50,43 @@ const SignupSchema = z.object({
 });
 
 const PaymentIntentSchema = z.object({
-  priceId: z.string(),
-  productId: z.string(),
+  priceId: priceId,
+  productId: productId,
 });
+
+/*
+  CHECKOUT SESSIONS
+*/
+const CreateCheckoutSessionCommandSchema = z.object({
+  userId: userId,
+  tenantId: tenantId,
+  currency: z.string(),
+});
+export type CreateCheckoutSessionCommand = z.infer<typeof CreateCheckoutSessionCommandSchema>;
+
+const CheckoutSessionItemDtoSchema = z.object({
+  productId: productId,
+  priceId: priceId,
+  quantity: z.number(),
+  operation: z.string(),
+});
+export type CheckoutSessionItemDto = z.infer<typeof CheckoutSessionItemDtoSchema>;
+
+const CreateCheckoutSessionSchema = z.object({
+  command: CreateCheckoutSessionCommandSchema,
+  items: CheckoutSessionItemDtoSchema.array().nullable(),
+});
+export type CreateCheckoutSessionPayload = z.infer<typeof CreateCheckoutSessionSchema>;
+
+/*
+  ORDERS
+*/
+const CreateOrderFromCheckoutSessionCommandSchema = z.object({
+  checkoutSessionId: checkoutSessionId,
+  userId: userId,
+  tenantId: tenantId,
+});
+export type CreateOrderFromCheckoutSessionCommand = z.infer<typeof CreateOrderFromCheckoutSessionCommandSchema>;
 
 /*
   POLYMORPHIC REQUEST SCHEMA
@@ -66,9 +109,27 @@ export type PaymentIntentRequestBody = z.infer<
   typeof PaymentIntentRequestSchema
 >;
 
+export const CheckoutSessionRequestSchema = ShoppingRequestBaseSchema.extend({
+  intent: z.literal(ShoppingActionEnum.enum.CREATE_CHECKOUT_SESSION),
+  body: CreateCheckoutSessionSchema,
+});
+export type CreateCheckoutSessionRequestBody = z.infer<
+  typeof CheckoutSessionRequestSchema
+>;
+
+export const OrderCreationRequestSchema = ShoppingRequestBaseSchema.extend({
+  intent: z.literal(ShoppingActionEnum.enum.CREATE_ORDER),
+  body: CreateOrderFromCheckoutSessionCommandSchema,
+});
+export type OrderCreationRequestBody = z.infer<
+  typeof OrderCreationRequestSchema
+>;
+
 export const ShoppingRequestBodySchema = z.discriminatedUnion('intent', [
   SignupRequestSchema,
   PaymentIntentRequestSchema,
+  CheckoutSessionRequestSchema,
+  OrderCreationRequestSchema
 ]);
 export type ShoppingRequestBody = z.infer<typeof ShoppingRequestBodySchema>;
 
