@@ -1,5 +1,4 @@
 import { Outlet } from 'react-router';
-import { GenericHeader } from '~/components/layout/header/main-view';
 import type { Route } from './+types/management-table._index';
 
 export function meta(args: Route.MetaArgs) {
@@ -13,10 +12,5 @@ export function meta(args: Route.MetaArgs) {
 }
 
 export default function AuthRootRoute() {
-  return (
-    <>
-      <GenericHeader />
-      <Outlet />
-    </>
-  );
+  return <Outlet />;
 }

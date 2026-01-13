@@ -2,7 +2,7 @@ import { authenticatedServerClient } from '~/lib/api/client.server';
 import { setAuthSession } from '../api/auth';
 import type { GenericServerResponse } from '../api/types';
 import { performSignup } from '../auth/api';
-import { createPaymentIntent } from './api';
+import { createCheckoutSession, createOrderFromCheckoutSession, createPaymentIntent } from './api';
 import type { PaymentIntentResponseDto, ShoppingRequestBody } from './types';
 
 export async function shoppingServerActionHandler(
@@ -18,7 +18,8 @@ export async function shoppingServerActionHandler(
         setAuthSession(serviceResponse);
         return {
           success: true,
-          message: 'A new customer has been registered',
+          message: 'SIGNUP',
+          // message: 'A new customer has been registered',
         };
       }
 
@@ -33,6 +34,31 @@ export async function shoppingServerActionHandler(
           message: 'Payment intent successfully created',
           data: serviceResponse,
         } as GenericServerResponse<PaymentIntentResponseDto>;
+      }
+
+      case 'CREATE_CHECKOUT_SESSION': {
+        const serviceResponse = await createCheckoutSession(
+          requestBody.body.command,
+          requestBody.body.items,
+          authenticatedServerClient
+        );
+        return {
+          success: true,
+          message: 'CREATE_CHECKOUT_SESSION',
+          data: serviceResponse,
+        } as GenericServerResponse<any>;
+      }
+
+      case 'CREATE_ORDER': {
+        const serviceResponse = await createOrderFromCheckoutSession(
+          requestBody.body,
+          authenticatedServerClient
+        );
+        return {
+          success: true,
+          message: 'CREATE_ORDER',
+          data: serviceResponse,
+        } as GenericServerResponse<any>;
       }
 
       default:

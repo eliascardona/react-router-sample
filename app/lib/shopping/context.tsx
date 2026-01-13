@@ -1,15 +1,24 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
-import type { ChargeInfoDto as ChargeInfo } from './types';
+import type { ChargeInfoDto as ChargeInfo, CheckoutSessionResponseDto } from './types';
 
 type CustomerInfo = {
   customerId: string;
 };
 
 type TShoppingContext = {
+  // For pricing info
   chargeInfo: ChargeInfo | null;
   setChargeInfo: (data: ChargeInfo | null | undefined) => void;
+
+  // For checkout session info
+  checkoutSessionInfo: CheckoutSessionResponseDto | null;
+  setCheckoutSessionInfo: (data: CheckoutSessionResponseDto | null | undefined) => void;
+
+  // For customer info
   customerInfo: CustomerInfo | null;
   setCustomerInfo: (data: CustomerInfo | null | undefined) => void;
+
+  // Helpers
   clearShoppingContents: () => void;
 };
 
@@ -25,6 +34,16 @@ export function ShoppingContextProvider({ children }: { children: ReactNode }) {
         ({
           ...prev,
           chargeInfo: data,
+        }) as TShoppingContext
+    );
+  };
+
+  const setCheckoutSessionInfo = (data: CheckoutSessionResponseDto | null | undefined) => {
+    setShoppingContents(
+      (prev) =>
+        ({
+          ...prev,
+          checkoutSessionInfo: data,
         }) as TShoppingContext
     );
   };
@@ -46,6 +65,8 @@ export function ShoppingContextProvider({ children }: { children: ReactNode }) {
   return (
     <ShoppingContext.Provider
       value={{
+        checkoutSessionInfo: shoppingContents?.checkoutSessionInfo || null,
+        setCheckoutSessionInfo,
         chargeInfo: shoppingContents?.chargeInfo || null,
         setChargeInfo,
         customerInfo: shoppingContents?.customerInfo || null,

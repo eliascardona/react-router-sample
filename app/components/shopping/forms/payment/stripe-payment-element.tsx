@@ -4,17 +4,14 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js';
 import { useState } from 'react';
-import { useLocation } from 'react-router';
+import { getProductIdFromPathname } from '~/lib/utils/utils';
 
-export function StripeLogicForm() {
+export function StripePaymentElement() {
   const stripeClient = useStripe();
   const elements = useElements();
+  const productId = getProductIdFromPathname();
   const [message, setMessage] = useState<string | null | undefined>(null);
 
-  const location = useLocation();
-
-  const pathnameArray = location.pathname;
-  const coursePathname = pathnameArray.split('/')[1];
 
   const handleSubmit = async (evt: any) => {
     evt.preventDefault();
@@ -23,7 +20,7 @@ export function StripeLogicForm() {
     const confirmationResponse = await stripeClient.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${window.location.origin}/course/${coursePathname}/thanks`,
+        return_url: `${window.location.origin}/course/${productId}/thanks`,
       },
     });
 
