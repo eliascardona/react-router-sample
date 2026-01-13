@@ -1,4 +1,3 @@
-import { useFormContext } from 'react-hook-form';
 import { Button } from '~/components/ui/button';
 import type { FieldConfig } from '~/lib/forms/retrieving/types';
 import { cn } from '~/lib/utils';
@@ -27,11 +26,9 @@ export function FormTrigger({
   onSubmit,
   disabled,
 }: FormProps) {
-  const { handleSubmit } = useFormContext();
-
   return (
     <div className={cn('w-full', containerClassName)}>
-      <form onSubmit={handleSubmit(onSubmit)} id={formId} className={className}>
+      <form onSubmit={onSubmit} id={formId} className={className}>
         <div className="grid gap-4">
           <fieldset className="grid gap-4" disabled={disabled}>
             {children}

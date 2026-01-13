@@ -72,11 +72,11 @@ const CheckoutSessionItemDtoSchema = z.object({
 });
 export type CheckoutSessionItemDto = z.infer<typeof CheckoutSessionItemDtoSchema>;
 
-const CreateCheckoutSessionSchema = z.object({
+const CreateCheckoutSessionDtoSchema = z.object({
   command: CreateCheckoutSessionCommandSchema,
   items: CheckoutSessionItemDtoSchema.array().nullable(),
 });
-export type CreateCheckoutSessionPayload = z.infer<typeof CreateCheckoutSessionSchema>;
+export type CreateCheckoutSessionDto = z.infer<typeof CreateCheckoutSessionDtoSchema>;
 
 /*
   ORDERS
@@ -111,7 +111,7 @@ export type PaymentIntentRequestBody = z.infer<
 
 export const CheckoutSessionRequestSchema = ShoppingRequestBaseSchema.extend({
   intent: z.literal(ShoppingActionEnum.enum.CREATE_CHECKOUT_SESSION),
-  body: CreateCheckoutSessionSchema,
+  body: CreateCheckoutSessionDtoSchema,
 });
 export type CreateCheckoutSessionRequestBody = z.infer<
   typeof CheckoutSessionRequestSchema
