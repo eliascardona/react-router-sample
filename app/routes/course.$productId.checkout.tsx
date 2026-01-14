@@ -1,13 +1,13 @@
 import { data, useActionData } from 'react-router';
 import { MainViewCheckoutPage } from '~/components/shopping/main-view';
+import { getUserFromAuthSession } from '~/lib/api/auth';
 import { apiClient } from '~/lib/api/client';
 import { searchStripePriceByProductId } from '~/lib/shopping/api';
+import { ShoppingContextProvider } from '~/lib/shopping/context';
 import { shoppingServerActionHandler } from '~/lib/shopping/server';
 import { ShoppingRequestBodySchema } from '~/lib/shopping/types';
-import type { Route } from './+types/course.$productId.checkout';
-import { getUserFromAuthSession } from '~/lib/api/auth';
-import { ShoppingContextProvider } from '~/lib/shopping/context';
 import { ELIASCARDONA_USER_ID } from '~/lib/TESTING_MOCKS';
+import type { Route } from './+types/course.$productId.checkout';
 
 export function meta(args: Route.MetaArgs) {
   return [
@@ -42,7 +42,7 @@ export async function loader(args: Route.LoaderArgs) {
 
   return data({
     chargeInfo: priceSearchResult,
-    userId: ELIASCARDONA_USER_ID
+    userId: ELIASCARDONA_USER_ID,
   });
 }
 

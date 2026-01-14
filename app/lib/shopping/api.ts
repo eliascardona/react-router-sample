@@ -15,7 +15,7 @@ import {
  *                /create
  *                /append-item
  *                /lock
- * 
+ *
  *      /api/orders
  *                /create
  */
@@ -92,10 +92,7 @@ export async function createOrderFromCheckoutSession(
   try {
     console.log(command);
 
-    const response = await client.post<any>(
-      `/orders/create`,
-      command
-    );
+    const response = await client.post<any>(`/orders/create`, command);
     console.log('\n----------- ORDER CREATION RESPONSE IS \n', response);
 
     return response;

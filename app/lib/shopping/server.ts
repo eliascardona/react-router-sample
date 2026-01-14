@@ -2,7 +2,11 @@ import { authenticatedServerClient } from '~/lib/api/client.server';
 import { setAuthSession } from '../api/auth';
 import type { GenericServerResponse } from '../api/types';
 import { performSignup } from '../auth/api';
-import { createCheckoutSession, createOrderFromCheckoutSession, createPaymentIntent } from './api';
+import {
+  createCheckoutSession,
+  createOrderFromCheckoutSession,
+  createPaymentIntent,
+} from './api';
 import type { PaymentIntentResponseDto, ShoppingRequestBody } from './types';
 
 export async function shoppingServerActionHandler(

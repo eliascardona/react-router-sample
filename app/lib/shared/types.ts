@@ -1,4 +1,4 @@
-import z from "zod"
+import z from 'zod';
 
 export const priceId = z.string();
 export const productId = z.string();

@@ -10,10 +10,7 @@ export function AccountInfoForm() {
   const submit = useSubmit();
   const navigation = useNavigation();
 
-  const options = generateSubmitOptionsForSignUp(
-    submit,
-    navigation
-  );
+  const options = generateSubmitOptionsForSignUp(submit, navigation);
   const { submitForm, isSubmitting } = useSubmitFromReactRouter(options);
   const { handleSubmit } = useFormContext();
 
@@ -21,7 +18,7 @@ export function AccountInfoForm() {
     const formattedData = formatDataIntoSignupRequest(data);
 
     submitForm(formattedData);
-  }
+  };
 
   const formFields: FieldConfig[] = [
     {

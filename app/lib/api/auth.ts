@@ -49,7 +49,7 @@ export const getUserFromAuthSession = () => {
   const user = authSession.get('user') as Record<string, any>;
 
   return user;
-}
+};
 
 export const clearAuthSession = (
   authSession: ReturnType<typeof getAuthSessionFromContext>

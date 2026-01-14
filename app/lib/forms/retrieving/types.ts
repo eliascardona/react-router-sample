@@ -15,7 +15,7 @@ export type FieldConfig = z.infer<typeof FieldConfigSchema>;
 export const FormSchema = z.object({
   name: z.string(),
   id: z.string().uuid(),
-  fields: FieldConfigSchema.array()
+  fields: FieldConfigSchema.array(),
 });
 
 export type Form = z.infer<typeof FormSchema>;
