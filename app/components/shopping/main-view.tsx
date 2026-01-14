@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useLoaderData, useSubmit } from 'react-router';
-import { TENANT_ID } from '~/lib/TESTING_MOCKS';
+import { useSubmit } from 'react-router';
+import { ELIASCARDONA_USER_ID, TENANT_ID } from '~/lib/TESTING_MOCKS';
 import type { GenericServerResponse } from '~/lib/api/types';
 import { useShoppingContext } from '~/lib/shopping/context';
 import { ShoppingActionEnum } from '~/lib/shopping/types';
 import { triggerCheckoutSessionCreation } from '~/lib/use-case/action-triggers';
 import { getProductIdFromPathname } from '~/lib/utils/utils';
-import type { loader } from '~/routes/course.$productId.checkout';
+// import type { loader } from '~/routes/course.$productId.checkout';
 import { ProductPriceSummary } from './(ui)/summary';
 import { AccountInfo } from './forms/account/main-view';
 import { PaymentFormWrapper } from './forms/payment/payment-form-wrapper';
@@ -23,7 +23,8 @@ export function MainViewCheckoutPage({
 }: {
   actionData: GenericServerResponse<any>;
 }) {
-  const { userId } = useLoaderData<typeof loader>();
+  // const { userId } = useLoaderData<typeof loader>();
+  const userId = ELIASCARDONA_USER_ID;
   const productIdFromPathname = getProductIdFromPathname();
   const [phase, setPhase] = useState<CheckoutPhase>('INIT');
 

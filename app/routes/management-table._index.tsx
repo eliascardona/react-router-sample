@@ -1,5 +1,8 @@
 import { EntityManagementSampleTable } from '~/components/management/entity-dashboard';
-import { authenticatedServerClient } from '~/lib/api/client.server';
+import {
+  createAuthenticatedClient,
+  createAuthenticatedClientForAction,
+} from '~/lib/api/client.server';
 import { listProducts } from '~/lib/management/api';
 import { productManagementActionHandler } from '~/lib/management/server';
 import { ProductManagementRequestBodySchema } from '~/lib/management/types';
@@ -22,8 +25,13 @@ export async function action(args: Route.ActionArgs) {
 
   if (!formData) throw new Error("You didn't send a request body");
 
+  const authenticatedApiClient = createAuthenticatedClientForAction(args);
+
   const requestBody = ProductManagementRequestBodySchema.parse(formData);
-  const transactionResult = await productManagementActionHandler(requestBody);
+  const transactionResult = await productManagementActionHandler(
+    requestBody,
+    authenticatedApiClient
+  );
 
   return transactionResult;
 }
@@ -31,12 +39,9 @@ export async function action(args: Route.ActionArgs) {
 export async function loader(args: Route.LoaderArgs) {
   const url = new URL(args.request.url);
   const { filter, params } = parseSearchParamsToApiFilters(url.searchParams);
+  const authenticatedApiClient = createAuthenticatedClient(args);
 
-  const response = await listProducts(
-    filter,
-    params,
-    authenticatedServerClient
-  );
+  const response = await listProducts(filter, params, authenticatedApiClient);
 
   return {
     dataPage: response || generateBlankPage(),

@@ -7,8 +7,8 @@ export default {
   future: {
     unstable_optimizeDeps: true,
     v8_middleware: true,
-    unstable_splitRouteModules: true,
-    unstable_viteEnvironmentApi: true,
+    v8_splitRouteModules: true,
+    v8_viteEnvironmentApi: true,
     unstable_subResourceIntegrity: true,
   },
 } satisfies Config;

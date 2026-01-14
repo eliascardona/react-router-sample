@@ -27,7 +27,7 @@ function generateSubmitOptionsForOrdering(
   return BASE_SUBMIT_OPTIONS_FOR_ORDERING;
 }
 
-function submitOptionsForOrdering_withNavigation(
+export function submitOptionsForOrdering_withNavigation(
   productId: string,
   submit: SubmitFunctionAbstraction['useSubmit'],
   navigation: Navigation

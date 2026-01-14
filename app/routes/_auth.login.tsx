@@ -1,7 +1,7 @@
 import { data, useActionData } from 'react-router';
 import { MainViewLogin } from '~/components/auth/login/main-view';
-import { setAuthSession } from '~/lib/api/auth';
-import { performSignup } from '~/lib/auth/api';
+import { performLogin } from '~/lib/auth/api';
+import { setAuthSession } from '~/lib/server/auth';
 import type { Route } from './+types/management-table._index';
 
 export function meta(args: Route.MetaArgs) {
@@ -19,7 +19,7 @@ export async function action(args: Route.ActionArgs) {
 
   if (!formData) throw new Error('Error in request body');
 
-  const result = await performSignup(formData);
+  const result = await performLogin(formData);
 
   if (result) {
     setAuthSession(result);

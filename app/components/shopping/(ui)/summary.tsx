@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
 import { useLoaderData } from 'react-router';
-import { useShoppingContext } from '~/lib/shopping/context';
 import type { ChargeInfoDto } from '~/lib/shopping/types';
 import { splitPrice } from '~/lib/shopping/utils';
 import type { loader } from '~/routes/course.$productId.checkout';
@@ -21,20 +19,16 @@ function ProductPriceSummaryContents({
 }: {
   chargeInfo: ChargeInfoDto;
 }) {
-  const { setChargeInfo } = useShoppingContext();
   const priceFields = splitPrice(chargeInfo);
 
-  useEffect(() => {
-    if (chargeInfo) {
-      setChargeInfo(chargeInfo);
-    }
-  }, [chargeInfo]);
-
   return (
-    <div className={'grid w-[88%] gap-2'}>
+    <div className={'grid gap-2'}>
       <span className={'hgLy'}>
         {/* logo of the company */}
-        <h2 className="text-3xl font-bold italic">Logotype</h2>
+        <h2 className="text-2xl font-bold italic">Logotype</h2>
+        {/* product overview */}
+        <h3 className="text-xl font-medium">You're about to buy:</h3>
+        <h2 className="text-3xl font-bold italic">PRODUCT NAME</h2>
         {/* pricing blocks */}
         <span className={'hgPricingLy'}>
           {priceFields.finalAmount && (
@@ -55,14 +49,7 @@ function ProductPriceSummaryContents({
               featureName={'Main product'}
               unitAmount={priceFields.parsedAmount}
             />
-            <FormattedAmount
-              featureName={'Second product'}
-              unitAmount={'0.00'}
-            />
-            <FormattedAmount
-              featureName={'Complementary'}
-              unitAmount={'0.00'}
-            />
+            <FormattedAmount featureName={'Complement'} unitAmount={'0.00'} />
             <FormattedAmount featureName={'Free-upsell'} unitAmount={'0.00'} />
             <FormattedAmount
               featureName={'Subtotal'}

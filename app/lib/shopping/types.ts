@@ -11,13 +11,22 @@ import {
   API RESPONSES
 */
 
-/* Checkout session retrieval schema */
+/* Checkout session Response DTO schema */
 export const CheckoutSessionResponseDtoSchema = z.object({
-  id: z.string(),
+  sessionId: z.string().uuid(),
 });
 export type CheckoutSessionResponseDto = z.infer<
   typeof CheckoutSessionResponseDtoSchema
 >;
+
+/* Create order Response DTO schema */
+export const OrderResponseDtoSchema = z.object({
+  orderId: z.string().uuid(),
+  internalPaymentIntentId: z.string().uuid(),
+  externalPaymentIntentId: z.string(),
+  stripeClientSecret: z.string(),
+});
+export type OrderResponseDto = z.infer<typeof OrderResponseDtoSchema>;
 
 /* Charge information retrieval schema */
 export const ChargeInfoDtoSchema = z.object({

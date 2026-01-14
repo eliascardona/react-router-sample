@@ -1,17 +1,35 @@
+import type { ActionFunctionArgs, LoaderFunctionArgs } from 'react-router';
 import { createApiClient } from '~/lib/api/client';
-import { getGlobalStorage } from '../server/global-context';
+import type { GlobalContextData } from '../server/global-context';
 
-export const createAuthenticatedServerClient = () => {
+export const createAuthenticatedClient = (args: LoaderFunctionArgs) => {
   const getAuthToken = async () => {
-    const store = getGlobalStorage();
-    const token = store.token;
+    const context = args.context;
+    const ctx = context as unknown as GlobalContextData;
+    const accessToken = ctx.accessToken;
 
-    if (!token) {
+    if (!accessToken) {
       throw new Error('No access token found');
     }
-    return token;
+    return accessToken;
   };
   return createApiClient(getAuthToken);
 };
 
-export const authenticatedServerClient = createAuthenticatedServerClient();
+export const createAuthenticatedClientForAction = (
+  args: ActionFunctionArgs
+) => {
+  const getAuthToken = async () => {
+    const context = args.context;
+    console.log('------------- THE CONTEXT IS', context);
+
+    const ctx = context as unknown as GlobalContextData;
+    const accessToken = ctx.accessToken;
+
+    if (!accessToken) {
+      throw new Error('No access token found');
+    }
+    return accessToken;
+  };
+  return createApiClient(getAuthToken);
+};

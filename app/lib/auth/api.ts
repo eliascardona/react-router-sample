@@ -1,5 +1,5 @@
-import type { AuthResponse } from '~/lib/api/auth';
 import { apiClient } from '~/lib/api/client';
+import type { AuthResponse } from '~/lib/auth/types';
 import type { SignupRequestBody } from '../shopping/types';
 
 export async function performLogin(

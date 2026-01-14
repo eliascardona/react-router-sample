@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import { FormDecorator } from '~/components/forms/form-decorator';
 import { FieldTypeEnum, type FieldConfig } from '~/lib/forms/retrieving/types';
 
 const formFields: FieldConfig[] = [
@@ -45,7 +44,8 @@ export function MainViewLogin({ actionData }: { actionData: any }) {
       <div className="w-1/2 rounded border">
         <h3 className="text-xl font-medium">Enter your credentials bro</h3>
         <FormProvider {...form}>
-          <FormDecorator formFields={formFields} />
+          {/* <FormDecorator formFields={formFields} /> */}
+          <></>
         </FormProvider>
       </div>
     </div>

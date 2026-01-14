@@ -1,12 +1,11 @@
-import { data, useActionData } from 'react-router';
-import { MainViewCheckoutPage } from '~/components/shopping/main-view';
-import { getUserFromAuthSession } from '~/lib/api/auth';
+import { data } from 'react-router';
+import { CheckoutController } from '~/components/shopping/proposal';
 import { apiClient } from '~/lib/api/client';
+import { createAuthenticatedClientForAction } from '~/lib/api/client.server';
 import { searchStripePriceByProductId } from '~/lib/shopping/api';
 import { ShoppingContextProvider } from '~/lib/shopping/context';
 import { shoppingServerActionHandler } from '~/lib/shopping/server';
 import { ShoppingRequestBodySchema } from '~/lib/shopping/types';
-import { ELIASCARDONA_USER_ID } from '~/lib/TESTING_MOCKS';
 import type { Route } from './+types/course.$productId.checkout';
 
 export function meta(args: Route.MetaArgs) {
@@ -24,17 +23,27 @@ export async function action(args: Route.ActionArgs) {
 
   if (!formData) throw new Error("You didn't send a request body");
 
+  const authenticatedApiClient = createAuthenticatedClientForAction(args);
+
   const requestBody = ShoppingRequestBodySchema.parse(formData);
 
-  const transactionResult = await shoppingServerActionHandler(requestBody);
+  const transactionResult = await shoppingServerActionHandler(
+    requestBody,
+    authenticatedApiClient,
+    args
+  );
+  if (!transactionResult) {
+    return {
+      success: true,
+      message: 'UNRESOLVED_ACTION',
+    };
+  }
 
   return transactionResult;
 }
 
 export async function loader(args: Route.LoaderArgs) {
   const { productId } = args.params;
-  const user = getUserFromAuthSession();
-
   const priceSearchResult = await searchStripePriceByProductId(
     productId,
     apiClient
@@ -42,16 +51,13 @@ export async function loader(args: Route.LoaderArgs) {
 
   return data({
     chargeInfo: priceSearchResult,
-    userId: ELIASCARDONA_USER_ID,
   });
 }
 
 export default function CheckoutPage() {
-  const actionData = useActionData<typeof action>();
-
   return (
     <ShoppingContextProvider>
-      <MainViewCheckoutPage actionData={actionData} />
+      <CheckoutController />
     </ShoppingContextProvider>
   );
 }
