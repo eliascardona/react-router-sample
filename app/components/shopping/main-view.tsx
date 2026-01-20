@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useSubmit } from 'react-router';
+import { ELIASCARDONA_USER_ID, TENANT_ID } from '~/lib/TESTING_MOCKS';
 import type { GenericServerResponse } from '~/lib/api/types';
 import { useShoppingContext } from '~/lib/shopping/context';
+import { ShoppingActionEnum } from '~/lib/shopping/types';
+import { triggerCheckoutSessionCreation } from '~/lib/use-case/action-triggers';
+import { getProductIdFromPathname } from '~/lib/utils/utils';
+// import type { loader } from '~/routes/course.$productId.checkout';
 import { ProductPriceSummary } from './(ui)/summary';
 import { AccountInfo } from './forms/account/main-view';
-import { getProductIdFromPathname } from '~/lib/utils/utils';
-import type { loader } from '~/routes/course.$productId.checkout';
-import { useLoaderData, useSubmit } from 'react-router';
-import { TENANT_ID } from '~/lib/TESTING_MOCKS';
-import { ShoppingActionEnum } from '~/lib/shopping/types';
-import { triggerCheckoutSessionCreation, triggerOrderCreation } from '~/lib/use-case/action-triggers';
 import { PaymentFormWrapper } from './forms/payment/payment-form-wrapper';
 
 type CheckoutPhase =
@@ -23,7 +23,8 @@ export function MainViewCheckoutPage({
 }: {
   actionData: GenericServerResponse<any>;
 }) {
-  const { userId } = useLoaderData<typeof loader>();
+  // const { userId } = useLoaderData<typeof loader>();
+  const userId = ELIASCARDONA_USER_ID;
   const productIdFromPathname = getProductIdFromPathname();
   const [phase, setPhase] = useState<CheckoutPhase>('INIT');
 
@@ -34,14 +35,10 @@ export function MainViewCheckoutPage({
     const commandB = {
       userId,
       tenantId: TENANT_ID,
-      currency: 'MXN'
-    }
+      currency: 'MXN',
+    };
 
-    triggerCheckoutSessionCreation(
-      productIdFromPathname,
-      commandB,
-      submit
-    );
+    triggerCheckoutSessionCreation(productIdFromPathname, commandB, submit);
 
     setPhase('CHECKOUT_SESSION_CREATING');
   }, [submit, userId, productIdFromPathname]);
@@ -77,8 +74,7 @@ export function MainViewCheckoutPage({
       <div className={'grid w-[90%] grid-cols-2 gap-2 justify-self-center'}>
         <ProductPriceSummary />
         <span className={'p-4'}>
-          {phase === 'INIT' ||
-            phase === 'CHECKOUT_SESSION_CREATING' ? (
+          {phase === 'INIT' || phase === 'CHECKOUT_SESSION_CREATING' ? (
             <AccountInfo />
           ) : (
             <PaymentFormWrapper />

@@ -1,11 +1,12 @@
-import type { ApiClient } from '../api/client';
+import { apiClient, type ApiClient } from '../api/client';
 import {
   ChargeInfoDtoSchema,
   type ChargeInfoDto,
   type CheckoutSessionItemDto,
+  type CheckoutSessionResponseDto,
   type CreateCheckoutSessionCommand,
   type CreateOrderFromCheckoutSessionCommand,
-  type PaymentIntentResponseDto,
+  type OrderResponseDto,
 } from './types';
 
 /**
@@ -15,7 +16,7 @@ import {
  *                /create
  *                /append-item
  *                /lock
- * 
+ *
  *      /api/orders
  *                /create
  */
@@ -38,45 +39,25 @@ export async function searchStripePriceByProductId(
   }
 }
 
-export async function createPaymentIntent(
-  priceId: string,
-  productId: string,
-  client: ApiClient
-): Promise<PaymentIntentResponseDto> {
-  try {
-    const response = await client.post<PaymentIntentResponseDto>(
-      `/stripe/intent/create`,
-      {
-        priceId,
-        productId,
-      }
-    );
-    console.log('\n----------- PAYMENT INTENT RESPONSE IS \n', response);
-
-    return response;
-  } catch (error) {
-    console.error('Error creating payment intent:', error);
-    throw error;
-  }
-}
-
 export async function createCheckoutSession(
   command: CreateCheckoutSessionCommand,
   items: CheckoutSessionItemDto[] | null,
   client: ApiClient
-): Promise<any> {
+): Promise<CheckoutSessionResponseDto> {
   try {
     const payload = {
       command,
       items,
     };
-    console.log(payload);
-
-    const response = await client.post<any>(
+    const response = await apiClient.post<CheckoutSessionResponseDto>(
       `/checkout-session/create`,
       payload
     );
-    console.log('\n----------- CHECKOUT SESSION RESPONSE IS \n', response);
+    console.log(
+      '--------- CHECKOUT RESPONSE -------------',
+      JSON.stringify(response),
+      '\n'
+    );
 
     return response;
   } catch (error) {
@@ -88,15 +69,17 @@ export async function createCheckoutSession(
 export async function createOrderFromCheckoutSession(
   command: CreateOrderFromCheckoutSessionCommand,
   client: ApiClient
-): Promise<any> {
+): Promise<OrderResponseDto> {
   try {
-    console.log(command);
-
-    const response = await client.post<any>(
-      `/orders/create`,
+    const response = await apiClient.post<OrderResponseDto>(
+      '/order/create/source/checkout-session',
       command
     );
-    console.log('\n----------- ORDER CREATION RESPONSE IS \n', response);
+    console.log(
+      '--------- ORDER RESPONSE -------------',
+      JSON.stringify(response),
+      '\n'
+    );
 
     return response;
   } catch (error) {

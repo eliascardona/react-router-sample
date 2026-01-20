@@ -7,9 +7,9 @@ import z from 'zod';
 import { Input } from '~/components/ui/input';
 import { getHtmlFieldType } from '~/lib/forms/retrieving/utils';
 import { cn } from '~/lib/utils';
+import type { FieldConfig } from '../proposal/schema';
 import { GenericFieldError } from './ui/generic-field-error';
 import { GenericLabel } from './ui/generic-label';
-import type { FieldConfig } from '../proposal/schema';
 
 function generateZodSchema() {
   return z.string().min(2);

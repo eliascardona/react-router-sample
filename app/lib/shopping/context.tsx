@@ -1,5 +1,8 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
-import type { ChargeInfoDto as ChargeInfo, CheckoutSessionResponseDto } from './types';
+import type {
+  ChargeInfoDto as ChargeInfo,
+  CheckoutSessionResponseDto,
+} from './types';
 
 type CustomerInfo = {
   customerId: string;
@@ -12,7 +15,9 @@ type TShoppingContext = {
 
   // For checkout session info
   checkoutSessionInfo: CheckoutSessionResponseDto | null;
-  setCheckoutSessionInfo: (data: CheckoutSessionResponseDto | null | undefined) => void;
+  setCheckoutSessionInfo: (
+    data: CheckoutSessionResponseDto | null | undefined
+  ) => void;
 
   // For customer info
   customerInfo: CustomerInfo | null;
@@ -38,7 +43,9 @@ export function ShoppingContextProvider({ children }: { children: ReactNode }) {
     );
   };
 
-  const setCheckoutSessionInfo = (data: CheckoutSessionResponseDto | null | undefined) => {
+  const setCheckoutSessionInfo = (
+    data: CheckoutSessionResponseDto | null | undefined
+  ) => {
     setShoppingContents(
       (prev) =>
         ({

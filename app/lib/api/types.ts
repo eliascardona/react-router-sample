@@ -17,12 +17,3 @@ export type GenericServerResponse<T> =
     }
   | null
   | undefined;
-
-export const GenericServerResponseWithDataSchema = z.object({
-  success: z.boolean(),
-  message: z.string(),
-});
-
-export type GenericServerResponseWithData = z.infer<
-  typeof GenericServerResponseWithDataSchema
->;

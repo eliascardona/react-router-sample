@@ -1,64 +1,58 @@
-import { authenticatedServerClient } from '~/lib/api/client.server';
-import { setAuthSession } from '../api/auth';
-import type { GenericServerResponse } from '../api/types';
+import type { ActionFunctionArgs } from 'react-router';
+import type { ApiClient } from '../api/client';
 import { performSignup } from '../auth/api';
-import { createCheckoutSession, createOrderFromCheckoutSession, createPaymentIntent } from './api';
-import type { PaymentIntentResponseDto, ShoppingRequestBody } from './types';
+import { setAuthSession } from '../server/auth';
+import type { GlobalContextData } from '../server/global-context';
+import { createCheckoutSession, createOrderFromCheckoutSession } from './api';
+import { ShoppingActionEnum, type ShoppingRequestBody } from './types';
 
 export async function shoppingServerActionHandler(
-  requestBody: ShoppingRequestBody
-): Promise<GenericServerResponse<PaymentIntentResponseDto>> {
+  requestBody: ShoppingRequestBody,
+  authenticatedApiClient: ApiClient,
+  actionArgs: ActionFunctionArgs
+) {
   const intent = requestBody.intent;
+  const context = actionArgs.context;
+  const ctx = context as unknown as GlobalContextData;
+
   if (!requestBody) return null;
 
   try {
     switch (intent) {
       case 'SIGNUP': {
         const serviceResponse = await performSignup(requestBody);
-        setAuthSession(serviceResponse);
+        setAuthSession(ctx.authSession, serviceResponse);
         return {
           success: true,
-          message: 'SIGNUP',
-          // message: 'A new customer has been registered',
+          message: ShoppingActionEnum.enum.SIGNUP,
         };
-      }
-
-      case 'PAYMENT_INTENT': {
-        const serviceResponse = await createPaymentIntent(
-          requestBody.body.priceId,
-          requestBody.body.productId,
-          authenticatedServerClient
-        );
-        return {
-          success: true,
-          message: 'Payment intent successfully created',
-          data: serviceResponse,
-        } as GenericServerResponse<PaymentIntentResponseDto>;
       }
 
       case 'CREATE_CHECKOUT_SESSION': {
         const serviceResponse = await createCheckoutSession(
           requestBody.body.command,
           requestBody.body.items,
-          authenticatedServerClient
+          authenticatedApiClient
         );
-        return {
+        const checkoutSessionResponse = {
           success: true,
-          message: 'CREATE_CHECKOUT_SESSION',
+          message: ShoppingActionEnum.enum.CREATE_CHECKOUT_SESSION,
           data: serviceResponse,
-        } as GenericServerResponse<any>;
+        };
+        return checkoutSessionResponse;
       }
 
       case 'CREATE_ORDER': {
         const serviceResponse = await createOrderFromCheckoutSession(
           requestBody.body,
-          authenticatedServerClient
+          authenticatedApiClient
         );
-        return {
+        const orderResponse = {
           success: true,
-          message: 'CREATE_ORDER',
+          message: ShoppingActionEnum.enum.CREATE_ORDER,
           data: serviceResponse,
-        } as GenericServerResponse<any>;
+        };
+        return orderResponse;
       }
 
       default:

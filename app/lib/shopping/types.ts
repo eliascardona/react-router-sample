@@ -1,15 +1,32 @@
 import { z } from 'zod';
-import { checkoutSessionId, priceId, productId, tenantId, userId } from '../shared/types';
+import {
+  checkoutSessionId,
+  priceId,
+  productId,
+  tenantId,
+  userId,
+} from '../shared/types';
 
 /*
   API RESPONSES
 */
 
-/* Checkout session retrieval schema */
+/* Checkout session Response DTO schema */
 export const CheckoutSessionResponseDtoSchema = z.object({
-  id: z.string(),
+  sessionId: z.string().uuid(),
 });
-export type CheckoutSessionResponseDto = z.infer<typeof CheckoutSessionResponseDtoSchema>;
+export type CheckoutSessionResponseDto = z.infer<
+  typeof CheckoutSessionResponseDtoSchema
+>;
+
+/* Create order Response DTO schema */
+export const OrderResponseDtoSchema = z.object({
+  orderId: z.string().uuid(),
+  internalPaymentIntentId: z.string().uuid(),
+  externalPaymentIntentId: z.string(),
+  stripeClientSecret: z.string(),
+});
+export type OrderResponseDto = z.infer<typeof OrderResponseDtoSchema>;
 
 /* Charge information retrieval schema */
 export const ChargeInfoDtoSchema = z.object({
@@ -62,7 +79,9 @@ const CreateCheckoutSessionCommandSchema = z.object({
   tenantId: tenantId,
   currency: z.string(),
 });
-export type CreateCheckoutSessionCommand = z.infer<typeof CreateCheckoutSessionCommandSchema>;
+export type CreateCheckoutSessionCommand = z.infer<
+  typeof CreateCheckoutSessionCommandSchema
+>;
 
 const CheckoutSessionItemDtoSchema = z.object({
   productId: productId,
@@ -70,13 +89,17 @@ const CheckoutSessionItemDtoSchema = z.object({
   quantity: z.number(),
   operation: z.string(),
 });
-export type CheckoutSessionItemDto = z.infer<typeof CheckoutSessionItemDtoSchema>;
+export type CheckoutSessionItemDto = z.infer<
+  typeof CheckoutSessionItemDtoSchema
+>;
 
 const CreateCheckoutSessionDtoSchema = z.object({
   command: CreateCheckoutSessionCommandSchema,
   items: CheckoutSessionItemDtoSchema.array().nullable(),
 });
-export type CreateCheckoutSessionDto = z.infer<typeof CreateCheckoutSessionDtoSchema>;
+export type CreateCheckoutSessionDto = z.infer<
+  typeof CreateCheckoutSessionDtoSchema
+>;
 
 /*
   ORDERS
@@ -86,7 +109,9 @@ const CreateOrderFromCheckoutSessionCommandSchema = z.object({
   userId: userId,
   tenantId: tenantId,
 });
-export type CreateOrderFromCheckoutSessionCommand = z.infer<typeof CreateOrderFromCheckoutSessionCommandSchema>;
+export type CreateOrderFromCheckoutSessionCommand = z.infer<
+  typeof CreateOrderFromCheckoutSessionCommandSchema
+>;
 
 /*
   POLYMORPHIC REQUEST SCHEMA
@@ -129,7 +154,7 @@ export const ShoppingRequestBodySchema = z.discriminatedUnion('intent', [
   SignupRequestSchema,
   PaymentIntentRequestSchema,
   CheckoutSessionRequestSchema,
-  OrderCreationRequestSchema
+  OrderCreationRequestSchema,
 ]);
 export type ShoppingRequestBody = z.infer<typeof ShoppingRequestBodySchema>;
 

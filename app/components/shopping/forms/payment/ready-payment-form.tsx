@@ -6,7 +6,7 @@ const stripePromise = loadStripe(
   'pk_test_51HcCgTEb4AhOvqGQtNkDDt9pLoIjJEBpbmmRJZgIz0y3vdcrJDAYDP5DndpSrROfCs5jG7c0VKDNhjgDv5Au2Csv00ihRhpqpm'
 );
 
-export function ReadyPaymentForm({ clientSecret }: { clientSecret: string; }) {
+export function ReadyPaymentForm({ clientSecret }: { clientSecret: string }) {
   /*  stripe payment element custom styling  */
   const appearance = {
     theme: 'stripe' as const,

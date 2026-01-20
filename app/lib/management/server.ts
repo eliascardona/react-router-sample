@@ -1,10 +1,11 @@
-import { authenticatedServerClient } from '~/lib/api/client.server';
+import type { ApiClient } from '../api/client';
 import type { GenericServerResponse } from '../api/types';
 import { deleteProduct, updateProduct } from './api';
 import type { ProductManagementRequestBody } from './types';
 
 export async function productManagementActionHandler(
-  requestBody: ProductManagementRequestBody
+  requestBody: ProductManagementRequestBody,
+  authenticatedApiClient: ApiClient
 ): Promise<GenericServerResponse<any>> {
   const intent = requestBody.intent;
   if (!requestBody) return null;
@@ -14,7 +15,7 @@ export async function productManagementActionHandler(
       case 'UPDATE': {
         const serviceResponse = await updateProduct(
           requestBody,
-          authenticatedServerClient
+          authenticatedApiClient
         );
         return {
           success: true,
@@ -25,7 +26,7 @@ export async function productManagementActionHandler(
       case 'DELETE': {
         const serviceResponse = await deleteProduct(
           requestBody,
-          authenticatedServerClient
+          authenticatedApiClient
         );
         return serviceResponse;
       }

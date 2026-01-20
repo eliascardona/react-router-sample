@@ -12,7 +12,6 @@ export function StripePaymentElement() {
   const productId = getProductIdFromPathname();
   const [message, setMessage] = useState<string | null | undefined>(null);
 
-
   const handleSubmit = async (evt: any) => {
     evt.preventDefault();
     if (!stripeClient || !elements) return;
