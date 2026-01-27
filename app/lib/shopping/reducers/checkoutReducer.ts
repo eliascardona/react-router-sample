@@ -85,6 +85,9 @@ export function checkoutReducer(
         ...state,
         phase: 'ORDER_READY',
         orderId: event.orderId,
+        internalPaymentIntentId: event.internalPaymentIntentId,
+        externalPaymentIntentId: event.externalPaymentIntentId,
+        stripeClientSecret: event.stripeClientSecret,
       };
 
     default:

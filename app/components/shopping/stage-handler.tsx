@@ -3,15 +3,17 @@ import { ProductPriceSummary } from './(ui)/summary';
 import { ReadyPaymentForm } from './forms/payment/ready-payment-form';
 
 export function CheckoutViewHandler({ state }: { state: CheckoutState }) {
-  console.log('----------------- checkout phase is -----', state.phase);
-
   const renderComp = () => {
     switch (state.phase) {
       case 'CREATING_CHECKOUT_SESSION':
         return <ProductPriceSummary />;
 
       case 'ORDER_READY': {
-        const clientSecret = state.stripeClientSecret || 'SECRET';
+        const clientSecret = state.stripeClientSecret || null;
+
+        if (!clientSecret) {
+          return <>loading payment configuration...</>
+        }
 
         return <ReadyPaymentForm clientSecret={clientSecret} />;
       }

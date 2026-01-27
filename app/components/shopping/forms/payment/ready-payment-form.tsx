@@ -27,17 +27,13 @@ export function ReadyPaymentForm({ clientSecret }: { clientSecret: string }) {
   };
 
   return (
-    <>
-      {clientSecret && (
-        <Elements
-          stripe={stripePromise}
-          options={{
-            clientSecret,
-            appearance,
-          }}>
-          <StripePaymentElement />
-        </Elements>
-      )}
-    </>
+    <Elements
+      stripe={stripePromise}
+      options={{
+        clientSecret,
+        appearance,
+      }}>
+      <StripePaymentElement />
+    </Elements>
   );
 }
