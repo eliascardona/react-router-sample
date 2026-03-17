@@ -12,7 +12,7 @@ export function CheckoutViewHandler({ state }: { state: CheckoutState }) {
         const clientSecret = state.stripeClientSecret || null;
 
         if (!clientSecret) {
-          return <>loading payment configuration...</>
+          return <>loading payment configuration...</>;
         }
 
         return <ReadyPaymentForm clientSecret={clientSecret} />;

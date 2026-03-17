@@ -6,7 +6,7 @@ import type { Route } from './+types/management-table._index';
 
 export function meta(args: Route.MetaArgs) {
   return [
-    { title: 'Administración básica de una B.D. NO SQL' },
+    { title: 'Online Products Selling App' },
     {
       name: 'description',
       content: 'Coloca una descripción útil para las búsquedas de Google',

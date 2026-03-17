@@ -13,6 +13,7 @@ export type ExecutionFlags = {
 export type CheckoutState = {
   phase: CheckoutPhase;
 
+  stripePriceId?: string;
   checkoutSessionId?: string;
   orderId?: string;
   internalPaymentIntentId?: string;
@@ -23,7 +24,7 @@ export type CheckoutState = {
 };
 
 export type CheckoutEvent =
-  | { type: 'START' }
+  | { type: 'START'; stripePriceId: string }
   | { type: 'CHECKOUT_SESSION_COMMAND_ISSUED' }
   | { type: 'CHECKOUT_SESSION_CREATED'; sessionId: string }
   | { type: 'ORDER_COMMAND_ISSUED' }

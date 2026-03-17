@@ -1,6 +1,6 @@
 import {
   ShoppingActionEnum,
-  type CreateCheckoutSessionCommand,
+  type CreateCheckoutSessionContents,
   type CreateCheckoutSessionRequestBody,
   type CreateOrderFromCheckoutSessionCommand,
   type OrderCreationRequestBody,
@@ -21,7 +21,7 @@ export function formatDataIntoSignupRequest(data: any): SignupRequestBody {
 }
 
 export function formatDataIntoCreateCheckoutSessionRequestBody(
-  data: CreateCheckoutSessionCommand
+  data: CreateCheckoutSessionContents
 ): CreateCheckoutSessionRequestBody {
   const command = {
     userId: data.userId,
@@ -29,10 +29,17 @@ export function formatDataIntoCreateCheckoutSessionRequestBody(
     currency: data.currency,
   };
 
+  console.log('\n', data, '\n');
+  // This must not be static,
+  // for each item, a stripe
+  // price must be referenced
+  const stripePriceId = data.stripePriceId;
+
   const items = [
     {
       productId: PRODUCT_ID,
       priceId: PRICE_ID,
+      stripePriceId: stripePriceId,
       quantity: 1,
       operation: 'ADD' as const,
     },
