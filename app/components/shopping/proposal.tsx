@@ -5,7 +5,7 @@ import {
   useCheckoutEffects,
 } from '~/lib/shopping/hooks';
 import { checkoutReducer } from '~/lib/shopping/reducers/checkoutReducer';
-import { ELIASCARDONA_USER_ID } from '~/lib/TESTING_MOCKS';
+import { ELIASCARDONA_USER_ID, STRIPE_PRICE_ID } from '~/lib/TESTING_MOCKS';
 import { getProductIdFromPathname } from '~/lib/utils/utils';
 import type { action } from '~/routes/course.$productId.checkout';
 import { CheckoutViewHandler } from './stage-handler';
@@ -13,9 +13,8 @@ import { CheckoutViewHandler } from './stage-handler';
 export function CheckoutController() {
   const actionData = useActionData<typeof action>();
   const submit = useSubmit();
-
-  const userId = ELIASCARDONA_USER_ID;
   const productId = getProductIdFromPathname();
+  const stripePriceId = STRIPE_PRICE_ID;
 
   /* Authoritative state machine */
   const [state, dispatch] = useReducer(checkoutReducer, {
@@ -42,10 +41,13 @@ export function CheckoutController() {
 
   /* Bootstrap side effect (explicit, single-entry) */
   useEffect(() => {
-    if (state.phase === 'INIT') {
-      dispatch({ type: 'START' });
+    if (state.phase === 'INIT' && stripePriceId != null) {
+      dispatch({
+        type: 'START',
+        stripePriceId,
+      });
     }
-  }, [state.phase]);
+  }, [state.phase, stripePriceId]);
 
   return <CheckoutViewHandler state={state} />;
 }

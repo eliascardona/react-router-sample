@@ -74,6 +74,16 @@ const PaymentIntentSchema = z.object({
 /*
   CHECKOUT SESSIONS
 */
+const CreateCheckoutSessionContentsSchema = z.object({
+  userId: userId,
+  tenantId: tenantId,
+  currency: z.string(),
+  stripePriceId: z.string(),
+});
+export type CreateCheckoutSessionContents = z.infer<
+  typeof CreateCheckoutSessionContentsSchema
+>;
+
 const CreateCheckoutSessionCommandSchema = z.object({
   userId: userId,
   tenantId: tenantId,
@@ -86,6 +96,7 @@ export type CreateCheckoutSessionCommand = z.infer<
 const CheckoutSessionItemDtoSchema = z.object({
   productId: productId,
   priceId: priceId,
+  stripePriceId: z.string(),
   quantity: z.number(),
   operation: z.string(),
 });

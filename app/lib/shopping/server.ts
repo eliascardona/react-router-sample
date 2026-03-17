@@ -29,6 +29,12 @@ export async function shoppingServerActionHandler(
       }
 
       case 'CREATE_CHECKOUT_SESSION': {
+        console.log(
+          '--------- CHECKOUT_SESSION ITEMS -------------',
+          JSON.stringify(requestBody.body.items),
+          '\n'
+        );
+
         const serviceResponse = await createCheckoutSession(
           requestBody.body.command,
           requestBody.body.items,

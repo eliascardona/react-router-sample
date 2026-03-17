@@ -53,11 +53,6 @@ export async function createCheckoutSession(
       `/checkout-session/create`,
       payload
     );
-    console.log(
-      '--------- CHECKOUT RESPONSE -------------',
-      JSON.stringify(response),
-      '\n'
-    );
 
     return response;
   } catch (error) {

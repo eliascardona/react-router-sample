@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import type { SubmitFunction } from 'react-router';
+import { STRIPE_PRICE_ID } from '~/lib/TESTING_MOCKS';
 import { TENANT_ID } from '../TESTING_MOCKS';
 import {
   triggerCheckoutSessionCreation,
@@ -54,12 +55,13 @@ export function useCheckoutEffects(
       !state.execution.checkoutSessionCommandIssued
     ) {
       dispatch({ type: 'CHECKOUT_SESSION_COMMAND_ISSUED' });
-      const command = {
+      const contents = {
         userId: ctx.userId,
         tenantId: TENANT_ID,
         currency: 'MXN',
+        stripePriceId: STRIPE_PRICE_ID,
       };
-      triggerCheckoutSessionCreation(ctx.productId, command, submit);
+      triggerCheckoutSessionCreation(ctx.productId, contents, submit);
     }
 
     if (

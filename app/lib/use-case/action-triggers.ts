@@ -9,7 +9,7 @@ import {
   type SubmitFunctionAbstraction,
 } from '../forms/submission/utils';
 import type {
-  CreateCheckoutSessionCommand,
+  CreateCheckoutSessionContents,
   CreateOrderFromCheckoutSessionCommand,
 } from '../shopping/types';
 
@@ -47,13 +47,14 @@ function submitOptionsForOrdering_withoutNavigation(
 
 export function triggerCheckoutSessionCreation(
   productId: string,
-  command: CreateCheckoutSessionCommand,
+  contents: CreateCheckoutSessionContents,
   submit: SubmitFunctionAbstraction['useSubmit']
 ) {
   const options = submitOptionsForOrdering_withoutNavigation(productId, submit);
 
   const { submitForm } = useSubmitFromReactRouter(options);
-  const formattedData = formatDataIntoCreateCheckoutSessionRequestBody(command);
+  const formattedData =
+    formatDataIntoCreateCheckoutSessionRequestBody(contents);
 
   submitForm(formattedData);
 }
